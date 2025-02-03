@@ -1,0 +1,20 @@
+.action-button {
+    position: relative;
+    background: linear-gradient(135deg, #861CFF, #B06CFF, #7B07FF);
+    border-radius: 10px;
+    padding: 5px 10px;
+    display: inline-block;
+    border: none;
+}
+
+.action-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px; /* Border thickness */
+    border-radius: 12px;
+    background: linear-gradient(-73deg, #B881FF, #A78FFF);
+    -webkit-mask: linear-gradient(white, white) content-box, linear-gradient(white, white);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+}

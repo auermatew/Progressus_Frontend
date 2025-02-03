@@ -1,7 +1,8 @@
 // Code: Main App Component
 import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Loading from "./components/ui/Loading";
+import ErrorBoundary from "./utilities/ErrorBoundary";
 const LandingPage = lazy(() => import("./pages/Landingp/LandingPage"));
 const HomePage = lazy(() => import("./pages/Homep/HomePage"));
 const LoginPage = lazy(() => import("./pages/Login/LoginPage"));
@@ -11,45 +12,53 @@ const App = () => {
     return (
         <>
             {/* <Loading /> */}
-            <Router>
+            <BrowserRouter>
                 <Routes>
                     <Route
                         path="/progressus"
                         element={
-                            <Suspense fallback={<Loading />}>
-                                <LandingPage />
-                            </Suspense>
+                            <ErrorBoundary fallback="Error">
+                                <Suspense fallback={<Loading />}>
+                                    <LandingPage />
+                                </Suspense>
+                            </ErrorBoundary>
                         }
                     />
 
                     <Route
                         path="/progressus/home"
                         element={
-                            <Suspense fallback={<Loading />}>
-                                <HomePage />
-                            </Suspense>
+                            <ErrorBoundary fallback="Error">
+                                <Suspense fallback={<Loading />}>
+                                    <HomePage />
+                                </Suspense>
+                            </ErrorBoundary>
                         }
                     />
 
                     <Route
                         path="/progressus/login"
                         element={
-                            <Suspense fallback={<Loading />}>
-                                <LoginPage />
-                            </Suspense>
+                            <ErrorBoundary fallback="Error">
+                                <Suspense fallback={<Loading />}>
+                                    <LoginPage />
+                                </Suspense>
+                            </ErrorBoundary>
                         }
                     />
 
                     <Route
                         path="/progressus/register"
                         element={
-                            <Suspense fallback={<Loading />}>
-                                <RegisterPage />
-                            </Suspense>
+                            <ErrorBoundary fallback="Error">
+                                <Suspense fallback={<Loading />}>
+                                    <RegisterPage />
+                                </Suspense>
+                            </ErrorBoundary>
                         }
                     />
                 </Routes>
-            </Router>
+            </BrowserRouter>
         </>
     );
 };

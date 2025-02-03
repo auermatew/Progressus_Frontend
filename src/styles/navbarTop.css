@@ -1,0 +1,11 @@
+nav {
+    background: rgba(167, 143, 255, 0.25);
+}
+@media (max-width: 768px) {
+    nav {
+        background: none;
+    }
+}
+#menu {
+    background: rgba(167, 143, 255, 0.25);
+}

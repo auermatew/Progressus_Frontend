@@ -2,7 +2,17 @@
 export default {
     content: ["./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
-      extend: {},
+      extend: {
+        colors: {
+          'primary': '#1E1E1E',
+          'secondary': '#4F1294',
+          'third': '#A78FFF'
+        },
+        fontFamily: {
+          'poppins': ['Poppins', 'sans'],
+          'pacifico': ['Pacifico', 'sans']
+        },
+      },
     },
     plugins: [],
   }
