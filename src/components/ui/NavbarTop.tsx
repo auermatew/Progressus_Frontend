@@ -25,13 +25,13 @@ const NavbarTop = () => {
 
     return (
         <>
-            <nav className=" md:w-[80%] h-20 flex justify-between items-center mx-auto px-4 my-4 rounded-xl">
+            <nav className=" md:w-[80%] h-20 flex justify-between items-center mx-auto px-4 my-8 rounded-xl">
                 <div className="md:flex hidden w-full">
                     <ul className="flex items-center justify-evenly w-full">
                         <li>
                             <a
                                 href="/progressus"
-                                className="text-white font-[Pacifico] font-bold text-3xl p-2 w-full md:text-3xl text-center"
+                                className="text-white font-[Pacifico] font-bold p-2 w-full md:text-2xl text-center"
                             >
                                 Progressus.
                             </a>
@@ -76,7 +76,7 @@ const NavbarTop = () => {
 
                 <a
                     href="/progressus"
-                    className="text-white font-[Pacifico] font-bold text-3xl p-2 w-full text-center font-shadow-lg md:hidden"
+                    className="text-white font-[Pacifico] font-bold text-4xl p-2 w-full text-center font-shadow-lg md:hidden"
                 >
                     Progressus.
                 </a>
