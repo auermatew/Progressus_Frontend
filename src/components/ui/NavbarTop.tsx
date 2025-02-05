@@ -25,13 +25,13 @@ const NavbarTop = () => {
 
     return (
         <>
-            <nav className=" md:w-[80%] h-20 flex justify-between items-center mx-auto px-4 my-8 rounded-xl">
+            <nav className=" md:w-[80%] h-20 flex justify-between items-center mx-auto px-4 my-4 rounded-xl fixed top-0 w-full md:left-[10%]">
                 <div className="md:flex hidden w-full">
                     <ul className="flex items-center justify-evenly w-full">
                         <li>
                             <a
                                 href="/progressus"
-                                className="text-white font-[Pacifico] font-bold p-2 w-full md:text-2xl text-center"
+                                className="text-white font-[Pacifico] font-bold p-2 w-full md:text-3xl text-center leading-6"
                             >
                                 Progressus.
                             </a>
@@ -39,8 +39,8 @@ const NavbarTop = () => {
                         <li onClick={() => handleTabClick("/progressus/home")}>
                             <a
                                 href="/progressus/home"
-                                className={`text-white font-[Poppins] font-bold text-lg py-2 px-4 ${
-                                    activeTab === "/progressus/home" ? "border-b-4 border-[hsl(0,0,60)] rounded" : ""
+                                className={`text-white font-[Poppins] font-bold text-lg py-2 px-4 relative ${
+                                    activeTab === "/progressus/home" ? "after:content-[''] after:absolute after:left-1/2 after:bottom-0 after:-translate-x-1/2 after:h-[3px] after:w-8 after:bg-white after:opacity-60 after:rounded" : ""
                                 }`}
                             >
                                 Kezdőlap
@@ -49,8 +49,8 @@ const NavbarTop = () => {
                         <li onClick={() => handleTabClick("/progressus/login")}>
                             <a
                                 href="/progressus/login"
-                                className={`text-white font-[Poppins] font-bold text-lg py-2 px-4 ${
-                                    activeTab === "/progressus/login" ? "border-b-4 border-[hsl(0,0,60)] rounded" : ""
+                                className={`text-white font-[Poppins] font-bold text-lg py-2 px-4 relative ${
+                                    activeTab === "/progressus/login" ? "after:content-[''] after:absolute after:left-1/2 after:bottom-0 after:-translate-x-1/2 after:h-[3px] after:w-8 after:bg-white after:opacity-60 after:rounded" : ""
                                 }`}
                             >
                                 Tanároknak
@@ -59,8 +59,8 @@ const NavbarTop = () => {
                         <li onClick={() => handleTabClick("/progressus/register")}>
                             <a
                                 href="/progressus/register"
-                                className={`text-white font-[Poppins] font-bold text-lg py-2 px-4 ${
-                                    activeTab === "/progressus/register" ? "border-b-4 border-[hsl(0,0,60)] rounded" : ""
+                                className={`text-white font-[Poppins] font-bold text-lg py-2 px-4 relative ${
+                                    activeTab === "/progressus/register" ? "after:content-[''] after:absolute after:left-1/2 after:bottom-0 after:-translate-x-1/2 after:h-[3px] after:w-8 after:bg-white after:opacity-60 after:rounded" : ""
                                 }`}
                             >
                                 Diákoknak
