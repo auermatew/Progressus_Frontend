@@ -9,3 +9,7 @@ nav {
 #menu {
     background: rgba(167, 143, 255, 0.25);
 }
+#dropdown {
+    background: rgba(60, 0, 102, 0.8);
+    backdrop-filter: blur(30px);
+}

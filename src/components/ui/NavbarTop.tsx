@@ -28,7 +28,7 @@ const NavbarTop = () => {
             <nav className=" md:w-[80%] h-20 flex justify-between items-center mx-auto px-4 my-4 rounded-xl fixed top-0 w-full md:left-[10%]">
                 <div className="md:flex hidden w-full">
                     <ul className="flex items-center justify-evenly w-full">
-                        <li>
+                        <li onClick={() => handleTabClick("/progressus")}>
                             <a
                                 href="/progressus"
                                 className="text-white font-[Pacifico] font-bold p-2 w-full md:text-3xl text-center leading-6"
@@ -88,7 +88,8 @@ const NavbarTop = () => {
                 </div>
 
                 <div
-                    className={`fixed md:hidden right-0 top-24 w-full h-auto bg-[#4F1294] z-50 border-y border-y-[#A78FFF] flex flex-col duration-400 ease-in-out ${
+                    id="dropDown"
+                    className={`fixed md:hidden right-0 top-24 w-full h-auto z-50 border-y border-y-[#A78FFF] flex flex-col duration-400 ease-in-out ${
                         !isOpen ? "flex" : "fixed right-[-100%]"
                     }`}
                 >
