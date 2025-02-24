@@ -37,13 +37,14 @@ const LandingPage = () => {
               </h2>
             </div>
             <div className="action-div p-4">
-              <a href="/*  */">
+              <a href="/progressus/register">
                 <ActionButton content="Tudj meg többet!" />
               </a>
             </div>
           </div>
         </section>
         <section className="infos">
+          {/* Section containing statistics */}
           <div className="wrapper flex w-screen flex-row justify-evenly bg-[#1A0129] py-6 font-[Poppins]">
             <div className="row flex w-[50%] flex-col items-center justify-evenly md:flex-row">
               <div className="flex w-auto flex-col items-center justify-center p-4">
@@ -70,7 +71,8 @@ const LandingPage = () => {
             </div>
           </div>
         </section>
-        <section className="for-teachers font-[Poppins]">
+        <section id="forTeachers" className="for-teachers font-[Poppins]">
+          {/* Section advertising for teachers */}
           <div className="wrapper flex h-auto w-screen flex-col py-16">
             <div className="flex w-[100%] flex-col md:flex-row">
               <div className="left items-evenly flex h-auto w-screen flex-col justify-center text-center md:m-8 md:w-[50%] md:pl-6 md:text-start">
@@ -136,6 +138,7 @@ const LandingPage = () => {
           </div>
         </section>
         <section className="sponsors h-auto w-screen bg-[#1A0129] p-4">
+          {/* Section containing partner companys */}
           <div className="headline w-[screen flex h-[10%] items-center justify-center">
             <p className="text-xl text-gray-400">Partnereink:</p>
           </div>
@@ -143,8 +146,13 @@ const LandingPage = () => {
             {/* sponsor logos */}
           </div>
         </section>
-        <section className="for-students">
-          {/* Section advertising Progressus for Students */}
+        <section id="forStudents" className="font-[Poppins]">
+          {/* Section advertising for students */}
+          <div className="wrapper flex h-auto w-screen flex-col py-16">
+            <div className="flex w-[100%] flex-col md:flex-row">
+              {/* For students */}
+            </div>
+          </div>
         </section>
       </div>
       <Footer />

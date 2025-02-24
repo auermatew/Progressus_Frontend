@@ -2,3 +2,6 @@
 @theme {
     --breakpoint-md: 984px;
 }
+body {
+    scroll-behavior: smooth;
+}
