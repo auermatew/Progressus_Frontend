@@ -1,5 +1,6 @@
 nav {
-    background: rgba(167, 143, 255, 0.25);
+    /* background: linear-gradient(to bottom, rgba(26, 1, 41, 0.5), transparent); */
+    background: rgba(26, 1, 41, 0.5);
 }
 @media (max-width: 768px) {
     nav {
@@ -7,9 +8,9 @@ nav {
     }
 }
 #menu {
-    background: rgba(167, 143, 255, 0.25);
+    background: rgba(26, 1, 41, 0.5);
 }
-#dropdown {
-    background: rgba(60, 0, 102, 0.8);
+#dropDown {
+    background: rgba(60, 0, 102, 0.25);
     backdrop-filter: blur(30px);
 }

@@ -25,7 +25,7 @@ const NavbarTop = () => {
 
     return (
         <>
-            <nav className=" md:w-[80%] h-20 flex justify-between items-center mx-auto px-4 my-4 rounded-xl fixed top-0 w-full md:left-[10%]">
+            <nav className=" md:w-[80%] h-20 flex justify-between items-center mx-auto px-4 my-4 rounded-xl fixed top-0 w-full md:left-[10%] z-50">
                 <div className="md:flex hidden w-full">
                     <ul className="flex items-center justify-evenly w-full">
                         <li onClick={() => handleTabClick("/progressus")}>

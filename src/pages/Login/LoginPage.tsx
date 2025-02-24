@@ -5,7 +5,8 @@ import Navbar from "../../components/ui/NavbarTop";
 import ActionButton from "../../components/ui/ActionButton";
 import Input from "../../components/form/input";
 import "./login.css";
-import Teacher from "../../assets/images/teacher.jpg";
+// import Teacher from "../../assets/images/teacher.jpg";
+import Footer from "../../components/ui/Footer";
 
 const LoginPage = () => {
     return (
@@ -63,6 +64,7 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </>
     );
 };
