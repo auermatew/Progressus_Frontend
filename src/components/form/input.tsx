@@ -26,7 +26,7 @@ const Input: React.FC<inputProps> = ({ id, type, placeholder }) => {
                         className="text-white -ml-12 text-3xl cursor-pointer select-none"
                         onClick={() => setVisible(!visible)}
                     >
-                        {visible ? "🙈" : "👁️"}
+                        {visible ? "🙈" : "🙉"}
                     </p>
                 </>
             ) : (

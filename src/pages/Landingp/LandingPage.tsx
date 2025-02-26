@@ -14,14 +14,14 @@ import Teacher from './img/teacher.png';
 
 const LandingPage = () => {
   return (
-    <div className="bg-custom-radial min-h-screen">
+    <>
       <Navbar />
       <div className="wrapper flex w-screen flex-1 flex-col items-center justify-center px-12">
-        <section className="hero h-[100vh] w-screen">
+        <section id="hero" className="hero h-[100vh] w-screen">
           <div className="flex h-full w-auto flex-col items-center justify-center">
             <div className="users mx-auto flex h-12 w-auto flex-row items-center justify-center rounded-4xl border-2 border-[#7B07FF] px-4 md:w-auto md:p-4">
               <img src={userIcon} alt="users" className="mr-4 ml-[-0.875rem] h-8 md:mr-2 md:h-12" />
-              <p className="z-[-1] font-[Poppins] text-sm text-white opacity-75 md:text-lg">
+              <p className="z-[1] font-[Poppins] text-sm text-white opacity-75 md:text-lg">
                 20.000+ elégedett felhasználó
               </p>
             </div>
@@ -114,13 +114,13 @@ const LandingPage = () => {
                 </div>
               </div>
               <div className="flex w-[100%] md:hidden justify-center items-center pb-8">
-                <a href="">
+                <a href="/register">
                   <ActionButton content="Regisztrálok tanárként" />
                 </a>
               </div>
-              <div className="right hidden h-full flex-col items-center justify-center md:flex md:w-[50%]">
+              <div className="right hidden flex-col items-center justify-center md:flex md:w-[50%]">
                 <img src={Teacher} alt="Tanár" className="m-8 rounded-4xl" />
-                <a href="/*  */">
+                <a href="/register">
                   <ActionButton content="Regisztrálok tanárként" />
                 </a>
               </div>
@@ -156,7 +156,7 @@ const LandingPage = () => {
         </section>
       </div>
       <Footer />
-    </div>
+    </>
   );
 };
 

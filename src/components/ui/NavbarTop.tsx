@@ -30,7 +30,7 @@ const NavbarTop = () => {
           <ul className="flex w-full items-center justify-evenly">
             <li onClick={() => handleTabClick('/progressus')}>
               <a
-                href="/progressus"
+                href="/"
                 className="w-full p-2 text-center font-[Pacifico] leading-6 font-bold text-white md:text-3xl"
               >
                 Progressus.
@@ -38,7 +38,7 @@ const NavbarTop = () => {
             </li>
             <li onClick={() => handleTabClick('/progressus/home')}>
               <a
-                href="/progressus/home"
+                href="/home"
                 className={`relative px-4 py-2 font-[Poppins] text-lg font-bold text-white ${
                   activeTab === '/progressus/home'
                     ? "after:absolute after:bottom-0 after:left-1/2 after:h-[3px] after:w-8 after:-translate-x-1/2 after:rounded after:bg-white after:opacity-60 after:content-['']"
@@ -88,8 +88,8 @@ const NavbarTop = () => {
             </li>
             <li>
               <a
-                href="/progressus/register"
-                onClick={() => handleTabClick('/progressus/register')}
+                href="/register"
+                onClick={() => handleTabClick('/register')}
                 className="cursor-pointer"
               >
                 <ActionButton content="Csatlakozz ma!" />

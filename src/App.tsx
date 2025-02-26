@@ -15,7 +15,7 @@ const App = () => {
             <BrowserRouter>
                 <Routes>
                     <Route
-                        path="/progressus"
+                        path="/"
                         element={
                             <ErrorBoundary fallback="Error">
                                 <Suspense fallback={<Loading />}>
@@ -26,7 +26,7 @@ const App = () => {
                     />
 
                     <Route
-                        path="/progressus/home"
+                        path="/home"
                         element={
                             <ErrorBoundary fallback="Error">
                                 <Suspense fallback={<Loading />}>
@@ -37,7 +37,7 @@ const App = () => {
                     />
 
                     <Route
-                        path="/progressus/login"
+                        path="/login"
                         element={
                             <ErrorBoundary fallback="Error">
                                 <Suspense fallback={<Loading />}>
@@ -48,7 +48,7 @@ const App = () => {
                     />
 
                     <Route
-                        path="/progressus/register"
+                        path="/register"
                         element={
                             <ErrorBoundary fallback="Error">
                                 <Suspense fallback={<Loading />}>
