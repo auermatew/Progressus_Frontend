@@ -14,3 +14,6 @@ nav {
     background: rgba(60, 0, 102, 0.25);
     backdrop-filter: blur(30px);
 }
+.mobile-wrapper {
+    backdrop-filter: blur(20px);
+}

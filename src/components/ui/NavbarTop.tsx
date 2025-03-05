@@ -25,7 +25,7 @@ const NavbarTop = () => {
 
   return (
     <>
-      <nav className="fixed top-0 z-50 mx-auto my-4 flex h-20 w-full items-center justify-between rounded-xl px-4 md:left-[10%] md:w-[80%]">
+      <nav className="fixed top-0 z-50 mx-auto my-4 flex h-20 w-screen items-center justify-between rounded-xl px-4 md:left-[10%] md:w-[80%]">
         <div className="hidden w-full md:flex">
           <ul className="flex w-full items-center justify-evenly">
             <li onClick={() => handleTabClick('/progressus')}>
@@ -53,9 +53,7 @@ const NavbarTop = () => {
                 href="#forTeachers"
                 onClick={(e) => {
                   e.preventDefault();
-                  document
-                    .querySelector('#forTeachers')
-                    ?.scrollIntoView({ behavior: 'smooth' });
+                  document.querySelector('#forTeachers')?.scrollIntoView({ behavior: 'smooth' });
                   handleTabClick('teachers');
                 }}
                 className={`relative px-4 py-2 font-[Poppins] text-lg font-bold text-white ${
@@ -71,12 +69,10 @@ const NavbarTop = () => {
               <a
                 href="#forStudents"
                 onClick={(e) => {
-                    e.preventDefault();
-                    document
-                      .querySelector('#forStudents')
-                      ?.scrollIntoView({ behavior: 'smooth' });
-                    handleTabClick('students');
-                  }}
+                  e.preventDefault();
+                  document.querySelector('#forStudents')?.scrollIntoView({ behavior: 'smooth' });
+                  handleTabClick('students');
+                }}
                 className={`relative px-4 py-2 font-[Poppins] text-lg font-bold text-white ${
                   activeTab === 'students'
                     ? "after:absolute after:bottom-0 after:left-1/2 after:h-[3px] after:w-8 after:-translate-x-1/2 after:rounded after:bg-white after:opacity-60 after:content-['']"
@@ -98,53 +94,64 @@ const NavbarTop = () => {
           </ul>
         </div>
 
-        <a
-          href="/progressus"
-          className="font-shadow-lg w-full p-2 text-center font-[Pacifico] text-4xl font-bold text-white md:hidden"
-        >
-          Progressus.
-        </a>
-        <div
-          id="menu"
-          onClick={handleNav}
-          className="absolute right-4 z-20 block rounded-xl p-2 text-white md:hidden"
-        >
-          {!isOpen ? <CloseIcon size={32} /> : <MenuIcon size={32} />}
+        <div className="mobile-wrapper flex h-20 w-full items-center justify-between rounded-2xl md:hidden">
+          <a
+            href="/"
+            className="font-shadow-lg w-full p-2 text-center font-[Pacifico] text-4xl font-bold text-white md:hidden"
+          >
+            Progressus.
+          </a>
+          <div
+            id="menu"
+            onClick={handleNav}
+            className="absolute right-4 z-20 block rounded-xl p-2 text-white md:hidden"
+          >
+            {!isOpen ? <CloseIcon size={32} /> : <MenuIcon size={32} />}
+          </div>
         </div>
 
         <div
           id="dropDown"
-          className={`fixed top-24 right-0 z-50 flex h-auto w-full flex-col border-y border-y-[#A78FFF] duration-400 ease-in-out md:hidden ${
-            !isOpen ? 'flex' : 'fixed right-[-100%]'
+          className={`fixed top-24 left-0 z-50 flex h-auto w-screen flex-col border-y border-y-[#A78FFF] duration-400 ease-in-out md:hidden ${
+            isOpen ? 'hidden' : 'flex'
           }`}
         >
           <ul className="flex h-auto flex-col items-center">
             <li
-              onClick={() => handleTabClick('/progressus/home')}
+              onClick={() => {
+                handleTabClick('/progressus/home');
+                handleNav();
+              }}
               className="p-4 text-xl font-bold text-white"
             >
-              <a href="/progressus/home" className="border-b-gray-700 font-[Poppins]">
+              <a href="/" className="border-b-gray-700 font-[Poppins]">
                 Kezdőlap
               </a>
             </li>
             <li
-              onClick={() => handleTabClick('/progressus/login')}
+              onClick={() => {
+                handleTabClick('/progressus/login');
+                handleNav();
+              }}
               className="p-4 text-xl font-bold text-white"
             >
-              <a href="/progressus/login" className="border-b-gray-700 font-[Poppins]">
+              <a href="#forTeachers" className="border-b-gray-700 font-[Poppins]">
                 Tanároknak
               </a>
             </li>
             <li
-              onClick={() => handleTabClick('/progressus/register')}
+              onClick={() => {
+                handleTabClick('/progressus/register');
+                handleNav();
+              }}
               className="p-4 text-xl font-bold text-white"
             >
-              <a href="/progressus/register" className="font-[Poppins]">
+              <a href="#forStudents" className="font-[Poppins]">
                 Diákoknak
               </a>
             </li>
             <li className="mb-4">
-              <a href="/progressus/register" onClick={() => handleTabClick('/progressus/register')}>
+              <a href="/register" onClick={() => handleTabClick('/progressus/register')}>
                 <ActionButton content="Csatlakozz ma!" />
               </a>
             </li>

@@ -23,7 +23,7 @@ const RegisterPage = () => {
                 <div className="column flex w-[100%] flex-col items-center justify-center md:w-[50%]">
                   <div className="input-wrapper m-2 flex w-full flex-row items-center border-b-2 border-white px-4 md:w-[90%]">
                     <UserIcon size={20} className="left-6 block text-white" />
-                    <Input id="username" type="text" placeholder="Teljes név" />
+                    <Input id="fullName" type="text" placeholder="Teljes név" />
                   </div>
                   <div className="input-wrapper m-2 flex w-full flex-row items-center border-b-2 border-white px-4 md:w-[90%]">
                     <EmailIcon size={20} className="left-6 block text-white" />
@@ -47,6 +47,14 @@ const RegisterPage = () => {
             </form>
             <div className="submit mb-8 flex w-full items-center justify-center p-4 md:mb-0">
               <ActionButton content="Regisztráció" />
+            </div>
+            <div className="new-user flex w-full flex-col items-center justify-center">
+              <p className="p-2 font-[Poppins] text-gray-400">
+                Már regisztráltál? {' '}
+                <a href="/login" className="text-white hover:underline">
+                  Bejelentkezés
+                </a>
+              </p>
             </div>
           </div>
         </div>

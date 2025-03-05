@@ -3,6 +3,7 @@
 import { FaLock as LockIcon, FaEnvelope as EmailIcon } from 'react-icons/fa';
 import Navbar from '../../components/ui/NavbarTop';
 import Heading from '../../components/ui/Heading';
+import SubmitButton from '../../components/form/submitButton';
 import ActionButton from '../../components/ui/ActionButton';
 import Input from '../../components/form/input';
 import './login.css';
@@ -21,7 +22,7 @@ const LoginPage = () => {
         <div className="login-form flex h-full w-full flex-col items-center justify-center md:h-[100%] md:w-[50%]">
           <div className="form-wrapper z-10 flex h-[100%] w-[100%] flex-col items-center justify-center md:w-[70%] md:border-x-2">
             <Heading content="Bejelentkezés" />
-            <form className="flex w-[100%] flex-col items-center justify-center my-6">
+            <form className="flex w-[100%] flex-col items-center justify-center">
               <div className="input-wrapper m-4 flex w-[90%] flex-row items-center border-b-2 border-white px-4 md:w-[80%]">
                 <EmailIcon size={20} className="left-6 block text-white" />
                 <Input id="unInput" type="text" placeholder="Email cím" />
@@ -40,7 +41,17 @@ const LoginPage = () => {
               </div>
             </form>
             <div className="submit mb-8 flex w-full items-center justify-center p-4 md:mb-0">
-              <ActionButton content="Bejelentkezés" />
+              <a href="#" className="flex h-full w-full items-center justify-center">
+                <SubmitButton content="Bejelentkezés" />
+              </a>
+            </div>
+            <div className="new-user flex w-full flex-col items-center justify-center">
+              <p className="p-2 font-[Poppins] text-gray-400">
+                Még nem regisztráltál? {' '}
+                <a href="/register" className="text-white hover:underline">
+                  Regisztrálok
+                </a>
+              </p>
             </div>
           </div>
         </div>

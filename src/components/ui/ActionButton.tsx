@@ -1,20 +1,20 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import '../../styles/actionButton.css';
 
 type ActionButtonProps = {
-    content: string;
+  content: string;
 };
 
 const ActionButton: FC<ActionButtonProps> = ({ content }) => {
-    return (
-        <>
-            <div className="action-button cursor-pointer z-10">
-                <button className="text-white font-[Poppins] font-bold text-lg py-2 px-4 rounded-lg">
-                    {content}
-                </button>
-            </div>
-        </>
-    )
-}
+  return (
+    <>
+      <div className="action-button z-10 cursor-pointer">
+        <button className="rounded-lg px-4 py-2 font-[Poppins] text-lg font-bold text-white">
+          {content}
+        </button>
+      </div>
+    </>
+  );
+};
 
 export default ActionButton;

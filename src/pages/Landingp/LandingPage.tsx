@@ -37,7 +37,7 @@ const LandingPage = () => {
               </h2>
             </div>
             <div className="action-div p-4">
-              <a href="/progressus/register">
+              <a href="/register">
                 <ActionButton content="Tudj meg többet!" />
               </a>
             </div>
