@@ -7,3 +7,9 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+#forTeachers {
+    background-image: url(../assets/images/4teacherbg.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}

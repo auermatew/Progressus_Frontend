@@ -119,35 +119,39 @@ const NavbarTop = () => {
           <ul className="flex h-auto flex-col items-center">
             <li
               onClick={() => {
-                handleTabClick('/progressus/home');
-                handleNav();
+              handleTabClick('/progressus/home');
+              handleNav();
               }}
               className="p-4 text-xl font-bold text-white"
             >
               <a href="/" className="border-b-gray-700 font-[Poppins]">
-                Kezdőlap
+              Kezdőlap
               </a>
             </li>
             <li
-              onClick={() => {
-                handleTabClick('/progressus/login');
-                handleNav();
+              onClick={(e) => {
+              e.preventDefault();
+              document.querySelector('#forTeachers')?.scrollIntoView({ behavior: 'smooth' });
+              handleTabClick('teachers');
+              handleNav();
               }}
               className="p-4 text-xl font-bold text-white"
             >
-              <a href="#forTeachers" className="border-b-gray-700 font-[Poppins]">
-                Tanároknak
+              <a href="/" className="border-b-gray-700 font-[Poppins]">
+              Tanároknak
               </a>
             </li>
             <li
-              onClick={() => {
-                handleTabClick('/progressus/register');
-                handleNav();
+              onClick={(e) => {
+              e.preventDefault();
+              document.querySelector('#forStudents')?.scrollIntoView({ behavior: 'smooth' });
+              handleTabClick('students');
+              handleNav();
               }}
               className="p-4 text-xl font-bold text-white"
             >
-              <a href="#forStudents" className="font-[Poppins]">
-                Diákoknak
+              <a href="/" className="font-[Poppins]">
+              Diákoknak
               </a>
             </li>
             <li className="mb-4">

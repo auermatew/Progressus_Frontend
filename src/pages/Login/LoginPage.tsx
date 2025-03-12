@@ -1,25 +1,27 @@
 // Login page content
 
 import { FaLock as LockIcon, FaEnvelope as EmailIcon } from 'react-icons/fa';
-import Navbar from '../../components/ui/NavbarTop';
 import Heading from '../../components/ui/Heading';
 import SubmitButton from '../../components/form/submitButton';
-import ActionButton from '../../components/ui/ActionButton';
 import Input from '../../components/form/input';
 import './login.css';
-// import Teacher from "../../assets/images/teacher.jpg";
+import Gyuri from "../../assets/images/lenin-gyorgy.jpg";
 import Footer from '../../components/ui/Footer';
 
 const LoginPage = () => {
   return (
     <>
-      <Navbar />
+      <nav className="nav fixed top-0 z-50 mx-auto my-4 flex h-20 w-screen items-center justify-center rounded-xl px-4 md:left-[35%] md:w-[30%]">
+        <a href="/">
+          <h1 className='title font-[Pacifico] text-white text-4xl'>Progressus.</h1>
+        </a>
+      </nav>
       <div className="wrapper flex h-screen w-screen flex-1 flex-col items-center justify-center md:flex-row">
-        <div className="side-text hidden h-[100%] w-[50%] items-center justify-center md:flex">
-          {/* <img src={Teacher} className="rounded-4xl shadow-2xl w-[60%] h-[60%]" /> */}
+        <div className="side-text hidden h-[100%] w-[45%] items-center justify-center md:flex">
           {/* Virág Gyuri portré Lenin profilból */}
+          <img src={Gyuri} className="shadow-2xl w-full h-full" />
         </div>
-        <div className="login-form flex h-full w-full flex-col items-center justify-center md:h-[100%] md:w-[50%]">
+        <div className="login-form flex h-full w-full flex-col items-center justify-center md:h-[100%] md:w-[55%]">
           <div className="form-wrapper z-10 flex h-[100%] w-[100%] flex-col items-center justify-center md:w-[70%] md:border-x-2">
             <Heading content="Bejelentkezés" />
             <form className="flex w-[100%] flex-col items-center justify-center">
@@ -39,12 +41,12 @@ const LoginPage = () => {
                   Elfelejtett jelszó?
                 </a>
               </div>
-            </form>
             <div className="submit mb-8 flex w-full items-center justify-center p-4 md:mb-0">
               <a href="#" className="flex h-full w-full items-center justify-center">
                 <SubmitButton content="Bejelentkezés" />
               </a>
             </div>
+            </form>
             <div className="new-user flex w-full flex-col items-center justify-center">
               <p className="p-2 font-[Poppins] text-gray-400">
                 Még nem regisztráltál? {' '}

@@ -15,5 +15,5 @@ nav {
     backdrop-filter: blur(30px);
 }
 .mobile-wrapper {
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
 }
