@@ -6,7 +6,7 @@ const Footer = () => {
             <h1 className="font-[Poppins] text-gray-400 font-normal text-lg">
                 2025 <span className="text-2xl text-white font-[Pacifico]">Progressus.</span>™
             </h1>
-            <p className="text-gray-600">Fejlődj könnyen!</p>
+            <p className="text-gray-600 font-[Poppins]">Fejlődj könnyen!</p>
         </footer>
     );
 };

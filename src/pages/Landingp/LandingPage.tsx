@@ -3,7 +3,7 @@
 import Navbar from '../../components/ui/NavbarTop';
 import ActionButton from '../../components/ui/ActionButton';
 import Footer from '../../components/ui/Footer';
-import '../../styles/landingPage.css';
+import './landingPage.css';
 
 import userIcon from './img/userIcons.png';
 import Logo from '../../assets/images/logo.png';
@@ -11,6 +11,10 @@ import Energy from './img/energy-head.png';
 import Heart from './img/heart-head.png';
 import Tick from './img/tick-head.png';
 import Teacher from './img/teacher.png';
+import Trello from './img/trello.png';
+import Microsoft from './img/microsoft.png';
+import Paypal from './img/paypal.png';
+import Drive from './img/drive.png';
 
 const LandingPage = () => {
   return (
@@ -113,7 +117,7 @@ const LandingPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex w-[100%] md:hidden justify-center items-center pb-8">
+              <div className="flex w-[100%] items-center justify-center pb-8 md:hidden">
                 <a href="/register">
                   <ActionButton content="Regisztrálok tanárként" />
                 </a>
@@ -126,7 +130,7 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="bottom flex h-auto w-screen items-center justify-center">
-              <div className="rounded-4xl border-2 border-[#7B07FF] mx-2 px-4 py-2">
+              <div className="mx-2 rounded-4xl border-2 border-[#7B07FF] px-4 py-2">
                 <p className="text-center text-gray-300">
                   <span className="font-bold text-white md:text-sm">
                     “Mit ér a tudás, ha nem adhatjuk tovább az arra érdemeseknek?”
@@ -137,21 +141,34 @@ const LandingPage = () => {
             </div>
           </div>
         </section>
-        <section className="sponsors h-auto w-screen bg-[#1A0129] p-4">
+        <section className="sponsors font-[Poppins] h-auto w-screen bg-[#1A0129] p-4">
           {/* Section containing partner companys */}
-          <div className="headline w-[screen flex h-[10%] items-center justify-center">
-            <p className="text-xl text-gray-400">Partnereink:</p>
+          <div className="headline flex h-[10%] w-full items-center justify-center">
+            <p className="text-xl text-white">Partnereink:</p>
           </div>
-          <div className="wrapper flex h-[90%] w-screen flex-row items-center justify-evenly">
-            {/* sponsor logos */}
+          <div className="wrapper mb-4 flex h-[90%] w-full flex-row items-center justify-evenly">
+            <div className="column align-center flex flex-col md:flex-row w-[50%] justify-evenly">
+              <div className="sponsor items-center flex justify-center md:w-[15%]">
+                <img src={Trello} alt="" className="m-2 h-16 md:h-20" />
+              </div>
+              <div className="sponsor items-center flex justify-center md:w-[15%]">
+                <img src={Microsoft} alt="" className="m-2 h-16 md:h-20" />
+              </div>
+            </div>
+            <div className="column items-center flex flex-col md:flex-row w-[50%] justify-evenly">
+              <div className="sponsor items-center flex justify-center md:w-[15%]">
+                <img src={Paypal} alt="" className="m-2 h-16 md:h-20" />
+              </div>
+              <div className="sponsor items-center flex justify-center md:w-[15%]">
+                <img src={Drive} alt="" className="m-2 h-16 md:h-20" />
+              </div>
+            </div>
           </div>
         </section>
         <section id="forStudents" className="font-[Poppins]">
           {/* Section advertising for students */}
-          <div className="wrapper flex h-auto w-screen flex-col py-16">
-            <div className="flex w-[100%] flex-col md:flex-row">
-              {/* For students */}
-            </div>
+          <div className="wrapper flex h-screen w-screen flex-col py-16">
+            <div className="flex w-[100%] flex-col md:flex-row">{/* For students */}</div>
           </div>
         </section>
       </div>

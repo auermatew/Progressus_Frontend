@@ -2,13 +2,19 @@
     background: linear-gradient(to right, rgba(128, 128, 128, 0.5), transparent);
 }
 #hero {
-    background-image: url(../assets/images/landing.png);
+    background-image: url(../../assets/images/landing.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 #forTeachers {
-    background-image: url(../assets/images/4teacherbg.png);
+    background-image: url(../../assets/images/4teacherbg.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#forStudents {
+    background-image: url(../../assets/images/4studentbg.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
