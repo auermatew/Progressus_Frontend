@@ -9,7 +9,7 @@
 ## About Progressus
 
 This is the frontend part of the **Progressus** project.
-You can reach the Backend repo here: [Github] (https://github.com/auermatew/progressus_backend)
+You can reach the Backend repo here: [Github](https://github.com/auermatew/progressus_backend)
 
 ## Description
 
