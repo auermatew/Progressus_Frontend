@@ -1,16 +1,20 @@
 # Progressus Frontend
 
-<a id="readme-top"></a>
+
+## Project Contributors
+
+* **Backend Developer:** Auer Máté - [GitHub](https://github.com/auermatew)
+* **Frontend Developer:** Bartha Álmos - [GitHub](https://github.com/barthaa)
 
 ## About Progressus
 
 This is the frontend part of the **Progressus** project.
+You can reach the Backend repo here: [Github] (https://github.com/auermatew/progressus_backend)
 
 ## Description
 
 The website was made to make the Teacher-Student connection easier. Our goal is to help the students improve while the teachers can reach more people to help and make money with ease.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Built With
 
@@ -18,7 +22,6 @@ The website was made to make the Teacher-Student connection easier. Our goal is 
 * ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 * ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
 
@@ -33,9 +36,3 @@ The website was made to make the Teacher-Student connection easier. Our goal is 
    ```
 4. In the browser, navigate to [http://localhost:5173/](http://localhost:5173/) and enjoy.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Project Contributors
-
-* **Backend Developer:** Auer Máté - [GitHub](https://github.com/auermatew)
-* **Frontend Developer:** Bartha Álmos - [GitHub](https://github.com/barthaa)
