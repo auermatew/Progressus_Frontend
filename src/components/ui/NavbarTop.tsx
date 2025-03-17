@@ -7,7 +7,7 @@ import '../../assets/fonts/fonts.css';
 
 const NavbarTop = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState('/progressus/home');
+  const [activeTab, setActiveTab] = useState('/progressus/dashboard');
 
   useEffect(() => {
     const storedTab = localStorage.getItem('activeTab');
@@ -36,11 +36,11 @@ const NavbarTop = () => {
                 Progressus.
               </a>
             </li>
-            <li onClick={() => handleTabClick('/progressus/home')}>
+            <li onClick={() => handleTabClick('/progressus/dashboard')}>
               <a
-                href="/home"
+                href="/dashboard"
                 className={`relative px-4 py-2 font-[Poppins] text-lg font-bold text-white ${
-                  activeTab === '/progressus/home'
+                  activeTab === '/progressus/dashboard'
                     ? "after:absolute after:bottom-0 after:left-1/2 after:h-[3px] after:w-8 after:-translate-x-1/2 after:rounded after:bg-white after:opacity-60 after:content-['']"
                     : ''
                 }`}
