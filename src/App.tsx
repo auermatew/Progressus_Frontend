@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Loading from './components/ui/Loading';
 import ErrorBoundary from './utilities/ErrorBoundary';
+import MyPage from './pages/TeacherView/MyPage';
 
 const LandingPage = lazy(() => import('./pages/Landingp/LandingPage'));
 const HomePage = lazy(() => import('./pages/Homep/HomePage'));
@@ -101,6 +102,17 @@ const App = () => {
               <ErrorBoundary fallback="Error">
                 <Suspense fallback={<Loading />}>
                   <Calendar />
+                </Suspense>
+              </ErrorBoundary>
+            }
+          />
+
+          <Route
+            path="/mypage"
+            element={
+              <ErrorBoundary fallback="Error">
+                <Suspense fallback={<Loading />}>
+                  <MyPage />
                 </Suspense>
               </ErrorBoundary>
             }

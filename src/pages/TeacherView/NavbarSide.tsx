@@ -2,9 +2,11 @@ import { useState, useEffect, useMemo } from 'react';
 // import { FaChevronLeft as Left } from "react-icons/fa";
 import { MdMoreVert as More } from 'react-icons/md';
 import { RiDashboardFill } from "react-icons/ri";
-import { IoSchool } from "react-icons/io5";
+import { FaBookJournalWhills } from "react-icons/fa6";
 import { MdCalendarMonth } from "react-icons/md";
 import { PiStudentFill } from "react-icons/pi";
+import { TbLogout } from "react-icons/tb";
+import { BsPersonLinesFill } from "react-icons/bs";
 import { LuChevronFirst, LuChevronLast } from 'react-icons/lu';
 import { useLocation, Link } from 'react-router-dom';
 //import Logo from '../../../assets/images/logo.png';
@@ -19,7 +21,7 @@ export default function NavbarSide() {
   const navItems = useMemo(
     () => [
       { id: 'dashboard', text: 'Kezdőlap', icon: <RiDashboardFill size={25} />, href: '/dashboard' },
-      { id: 'lessons', text: 'Tantárgyak', icon: <IoSchool size={25} />, href: '/lessons' },
+      { id: 'lessons', text: 'Tantárgyak', icon: <FaBookJournalWhills size={25} />, href: '/lessons' },
       { id: 'students', text: 'Diákjaim', icon: <PiStudentFill size={25} />, href: '/students' },
       { id: 'calendar', text: 'Naptár', icon: <MdCalendarMonth size={25} />, href: '/calendar' },
     ],
@@ -58,6 +60,7 @@ export default function NavbarSide() {
             {isOpen ? <LuChevronFirst size={24} /> : <LuChevronLast size={30} />}
           </button>
         </div>
+
         <ul className="flex-1 px-3">
           {navItems.map((item) => (
             <div className="flex w-full justify-start" key={item.id}>
@@ -73,17 +76,42 @@ export default function NavbarSide() {
             </div>
           ))}
         </ul>
-        <div className="flex items-center border-t p-3">
-          <img src={User} alt="User" className="h-12 w-12 rounded-lg" />
-          {isOpen && (
-            <div className="ml-3 flex w-full items-center justify-between">
-              <div className="leading-4">
-                <h4 className="font-semibold text-white">Lovas Margaret</h4>
-                <span className="text-xs text-gray-400">lovas@petrik.hu</span>
+
+        <div className="flex items-start border-t p-3 h-[25%] w-full flex-col">
+          <ul className="flex-1 w-full">
+              <div className="flex w-full justify-start">
+                <SideBarItem
+                  icon={<TbLogout size={25} />}
+                  text={'Kijelentkezés'}
+                  href={'/logout'}
+                  isActive={activeItem === 'logout'}
+                  onClick={() => setActiveItem('logout')}
+                  isOpen={isOpen}
+                />
               </div>
-              <More size={24} className="text-white" />
-            </div>
-          )}
+              <div className="flex w-full justify-start">
+                <SideBarItem
+                  icon={<BsPersonLinesFill size={25} />}
+                  text={'Profilom'}
+                  href={'/mypage'}
+                  isActive={activeItem === 'mypage'}
+                  onClick={() => setActiveItem('mypage')}
+                  isOpen={isOpen}
+                />
+              </div>
+          </ul>
+          <div className="flex items-center p-1">
+            <img src={User} alt="User" className="h-12 w-12 rounded-lg" />
+            {isOpen && (
+              <div className="ml-3 flex w-full items-center justify-between">
+                <div className="leading-4">
+                  <h4 className="font-semibold text-white">Lovas Margaret</h4>
+                  <span className="text-xs text-gray-400">lovas@petrik.hu</span>
+                </div>
+                <More size={24} className="text-white" />
+              </div>
+            )}
+          </div>
         </div>
       </nav>
     </aside>
@@ -104,11 +132,11 @@ export function SideBarItem({ icon, text, href, isActive, onClick, isOpen }: Sid
     <Link to={href} className="w-full">
       <li
         onClick={onClick}
-        className={`relative mx-1 my-2 flex cursor-pointer items-center rounded-md p-2 text-white transition-all ${
+        className={`relative mx-1 my-2 flex cursor-pointer items-center rounded-md p-2 transition-all ${
           isActive
             ? 'bg-gradient-to-tr from-purple-700 to-purple-500 font-bold text-purple-600'
             : 'hover:bg-[#3F1E64] hover:text-purple-500'
-        }`}
+        } ${text === 'Kijelentkezés' ? 'text-red-600 hover:text-red-300 hover:bg-red-900' : 'text-white'}`}
       >
         <div className="ml-0.5 flex items-center justify-center transition-all">{icon}</div>
         <span
