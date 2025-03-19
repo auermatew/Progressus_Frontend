@@ -61,7 +61,7 @@ export default function NavbarSide() {
           </button>
         </div>
 
-        <ul className="flex-1 px-3">
+        <ul className="flex-1 px-3 font-[Poppins]">
           {navItems.map((item) => (
             <div className="flex w-full justify-start" key={item.id}>
               <SideBarItem
@@ -77,13 +77,13 @@ export default function NavbarSide() {
           ))}
         </ul>
 
-        <div className="flex items-start border-t p-3 h-[25%] w-full flex-col">
+        <div className="flex items-start border-t p-3 h-[25%] w-full flex-col font-[Poppins]">
           <ul className="flex-1 w-full">
               <div className="flex w-full justify-start">
                 <SideBarItem
                   icon={<TbLogout size={25} />}
                   text={'Kijelentkezés'}
-                  href={'/logout'}
+                  href={'/login'}
                   isActive={activeItem === 'logout'}
                   onClick={() => setActiveItem('logout')}
                   isOpen={isOpen}
@@ -136,7 +136,7 @@ export function SideBarItem({ icon, text, href, isActive, onClick, isOpen }: Sid
           isActive
             ? 'bg-gradient-to-tr from-purple-700 to-purple-500 font-bold text-purple-600'
             : 'hover:bg-[#3F1E64] hover:text-purple-500'
-        } ${text === 'Kijelentkezés' ? 'text-red-600 hover:text-red-300 hover:bg-red-900' : 'text-white'}`}
+        } ${text === 'Kijelentkezés' ? 'text-red-600 hover:text-white hover:bg-red-900' : 'text-white'}`}
       >
         <div className="ml-0.5 flex items-center justify-center transition-all">{icon}</div>
         <span
