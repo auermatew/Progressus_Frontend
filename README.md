@@ -18,13 +18,17 @@ The website was made to make the Teacher-Student connection easier. Our goal is 
 
 ## Built With
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
 
 
 ## Getting Started
 
 1. Clone the repository and open the command line in the folder.
-2. Run:
+   ```sh
+   git clone https://github.com/barthaa/progressus_frontend.git
+   cd progressus_frontend
+   ```
+2. Install the latest npm version:
    ```sh
    npm install npm@latest -g
    ```
@@ -34,3 +38,5 @@ The website was made to make the Teacher-Student connection easier. Our goal is 
    ```
 4. In the browser, navigate to [http://localhost:5173/](http://localhost:5173/) and enjoy.
 
+## Description
+...
