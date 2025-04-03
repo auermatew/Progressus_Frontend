@@ -5,7 +5,6 @@ import Heading from '../../components/ui/Heading';
 import SubmitButton from '../../components/form/submitButton';
 import Input from '../../components/form/input';
 import './login.css';
-//import Gyuri from "../../assets/images/lenin-gyorgy.jpg";
 import Footer from '../../components/ui/Footer';
 
 const LoginPage = () => {
@@ -18,8 +17,7 @@ const LoginPage = () => {
       </nav>
       <div className="wrapper flex h-screen w-screen flex-1 flex-col items-center justify-center md:flex-row">
         <div className="side-text hidden h-[100%] w-[45%] items-center justify-center md:flex">
-          {/* Virág Gyuri portré Lenin profilból */}
-          {/* <img src={Gyuri} className="shadow-2xl w-full h-full" /> */}
+          {/* Something */}
         </div>
         <div className="login-form flex h-full w-full flex-col items-center justify-center md:h-[100%] md:w-[55%]">
           <div className="form-wrapper z-10 flex h-[100%] w-[100%] flex-col items-center justify-center md:w-[70%] md:border-x-2">
