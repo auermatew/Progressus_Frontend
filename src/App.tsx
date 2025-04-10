@@ -5,6 +5,7 @@ import Loading from './components/ui/Loading';
 import ErrorBoundary from './utilities/ErrorBoundary.tsx';
 import ProtectedRoute from './utilities/ProtectedRoute';
 import MyPage from './pages/TeacherView/MyPage';
+import UnauthorizedPage from './pages/UnauthorizedPage';
 
 const LandingPage = lazy(() => import('./pages/Landingp/LandingPage'));
 const HomePage = lazy(() => import('./pages/Homep/HomePage'));
@@ -26,6 +27,17 @@ const App = () => {
               <ErrorBoundary fallback="Error">
                 <Suspense fallback={<Loading />}>
                   <LandingPage />
+                </Suspense>
+              </ErrorBoundary>
+            }
+          />
+
+          <Route
+            path="/unauthorized"
+            element={
+              <ErrorBoundary fallback="Error">
+                <Suspense fallback={<Loading />}>
+                  <UnauthorizedPage />
                 </Suspense>
               </ErrorBoundary>
             }
