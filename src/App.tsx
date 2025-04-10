@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Loading from './components/ui/Loading';
 import ErrorBoundary from './utilities/ErrorBoundary.tsx';
+import ProtectedRoute from './utilities/ProtectedRoute';
 import MyPage from './pages/TeacherView/MyPage';
 
 const LandingPage = lazy(() => import('./pages/Landingp/LandingPage'));
@@ -66,55 +67,65 @@ const App = () => {
           <Route
             path="/dashboard"
             element={
-              <ErrorBoundary fallback="Error">
-                <Suspense fallback={<Loading />}>
-                  <DashboardPage />
-                </Suspense>
-              </ErrorBoundary>
+              <ProtectedRoute requiredRole="TEACHER">
+                <ErrorBoundary fallback="Error">
+                  <Suspense fallback={<Loading />}>
+                    <DashboardPage />
+                  </Suspense>
+                </ErrorBoundary>
+              </ProtectedRoute>
             }
           />
 
           <Route
             path="/lessons"
             element={
-              <ErrorBoundary fallback="Error">
-                <Suspense fallback={<Loading />}>
-                  <Lessons />
-                </Suspense>
-              </ErrorBoundary>
+              <ProtectedRoute>
+                <ErrorBoundary fallback="Error">
+                  <Suspense fallback={<Loading />}>
+                    <Lessons />
+                  </Suspense>
+                </ErrorBoundary>
+              </ProtectedRoute>
             }
           />
 
           <Route
             path="/students"
             element={
-              <ErrorBoundary fallback="Error">
-                <Suspense fallback={<Loading />}>
-                  <Students />
-                </Suspense>
-              </ErrorBoundary>
+              <ProtectedRoute requiredRole="TEACHER">
+                <ErrorBoundary fallback="Error">
+                  <Suspense fallback={<Loading />}>
+                    <Students />
+                  </Suspense>
+                </ErrorBoundary>
+              </ProtectedRoute>
             }
           />
 
           <Route
             path="/calendar"
             element={
-              <ErrorBoundary fallback="Error">
-                <Suspense fallback={<Loading />}>
-                  <Calendar />
-                </Suspense>
-              </ErrorBoundary>
+              <ProtectedRoute requiredRole="TEACHER">
+                <ErrorBoundary fallback="Error">
+                  <Suspense fallback={<Loading />}>
+                    <Calendar />
+                  </Suspense>
+                </ErrorBoundary>
+              </ProtectedRoute>
             }
           />
 
           <Route
             path="/mypage"
             element={
-              <ErrorBoundary fallback="Error">
-                <Suspense fallback={<Loading />}>
-                  <MyPage />
-                </Suspense>
-              </ErrorBoundary>
+              <ProtectedRoute requiredRole="TEACHER">
+                <ErrorBoundary fallback="Error">
+                  <Suspense fallback={<Loading />}>
+                    <MyPage />
+                  </Suspense>
+                </ErrorBoundary>
+              </ProtectedRoute>
             }
           />
         </Routes>
