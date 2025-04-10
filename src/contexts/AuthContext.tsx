@@ -1,19 +1,64 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  PropsWithChildren,
+} from 'react';
+import { AxiosError } from 'axios';
+import { ApiError } from '../schema/api';
+import { User } from '../schema/user';
+import AuthApiService from '../api/AuthApiService';
 
 interface AuthContextType {
-  user: any;
+  user: User | null;
   loading: boolean;
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void | AxiosError<ApiError>>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  loading: true,
+  login: () => Promise.resolve(),
+  logout: () => {},
+  refreshUser: () => Promise.resolve(),
+});
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState(null);
+export const useAuth = () => useContext(AuthContext);
+
+const AuthProvider = ({ children }: PropsWithChildren) => {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Load user data from localStorage
+  const refreshUser = useCallback(async () => {
+    try {
+      const response = await AuthApiService.getUser();
+      setUser(response);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      setUser(null);
+    }
+  }, []);
+
+  const login = useCallback(async (username: string, password: string) => {
+    try {
+      const response = await AuthApiService.login({ username, password });
+      setUser(response);
+      localStorage.setItem('user', JSON.stringify(response));
+    } catch (error) {
+      console.error('Login failed:', error);
+      return error as AxiosError<ApiError>;
+    }
+  }, []);
+
+  const logout = useCallback(() => {
+    setUser(null);
+    localStorage.removeItem('user');
+  }, []);
+
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -22,52 +67,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false);
   }, []);
 
-  const login = async (username: string, password: string): Promise<void> => {
-    try {
-      const response = await fetch('http://localhost:8080/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (!response.ok) throw new Error('Login failed');
-
-      const data = await response.json();
-      setUser(data);
-      localStorage.setItem('user', JSON.stringify(data));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-  };
-
-  const fetchUserData = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/api/userdata', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user?.token}`,
-        },
-      });
-
-      if (!response.ok) throw new Error('Failed to fetch user data');
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  };
-
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export default AuthProvider;

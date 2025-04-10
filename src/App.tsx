@@ -2,7 +2,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Loading from './components/ui/Loading';
-import ErrorBoundary from './utilities/ErrorBoundary';
+import ErrorBoundary from './utilities/ErrorBoundary.tsx';
 import MyPage from './pages/TeacherView/MyPage';
 
 const LandingPage = lazy(() => import('./pages/Landingp/LandingPage'));
