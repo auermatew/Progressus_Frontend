@@ -29,6 +29,17 @@ class AuthApiService {
   public static async logout(): Promise<void> {
     await apiService.post(`${AuthApiService.subUrl}/logout`);
   }
+
+  public static async register(body: {
+    fullName: string;
+    email: string;
+    password: string;
+    role: 'TEACHER' | 'STUDENT';
+  }): Promise<{ success: boolean; message: string }> {
+    const response = await apiService.post('/auth/register', body);
+    return response.data;
+  }
+
 }
 
 export default AuthApiService;

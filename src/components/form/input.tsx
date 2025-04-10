@@ -21,7 +21,7 @@ const Input: React.FC<inputProps> = ({ id, type, value, onChange, placeholder })
           <input
             id={id}
             type={visible ? 'text' : 'password'}
-            className={`${commonClass}${!visible ? 'text-3xl' : ''}`}
+            className={`${commonClass}${!visible ? 'text-3xl' : ''} select-none`}
             value={value}
             placeholder={placeholder}
             onChange={onChange}

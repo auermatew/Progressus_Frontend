@@ -17,6 +17,12 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<void | AxiosError<ApiError>>;
   logout: () => void;
   refreshUser: () => Promise<void>;
+  register: (data: {
+    fullName: string;
+    email: string;
+    password: string;
+    role: 'TEACHER' | 'STUDENT';
+  }) => Promise<void | AxiosError<ApiError>>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -24,6 +30,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   login: () => Promise.resolve(),
   logout: () => {},
+  register: () => Promise.resolve(),
   refreshUser: () => Promise.resolve(),
 });
 
@@ -59,6 +66,29 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     localStorage.removeItem('user');
   }, []);
 
+  const register = useCallback(
+    async (data: {
+      fullName: string;
+      email: string;
+      password: string;
+      role: 'TEACHER' | 'STUDENT';
+    }) => {
+      try {
+        const response = await AuthApiService.register(data);
+        if (response && response.success) {
+          setUser(response as unknown as User);
+        } else {
+          console.error('Unexpected response format:', response.message);
+        }
+        localStorage.setItem('user', JSON.stringify(response));
+      } catch (error) {
+        console.error('Registration failed:', error);
+        return error as AxiosError<ApiError>;
+      }
+    },
+    []
+  );
+
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -68,7 +98,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, register, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
