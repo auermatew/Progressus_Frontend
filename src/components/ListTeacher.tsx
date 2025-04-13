@@ -1,5 +1,4 @@
 import { useTeacher } from '../contexts/TeacherContext';
-import React from 'react';
 
 const List = () => {
   const { teachers, createTeacher } = useTeacher();

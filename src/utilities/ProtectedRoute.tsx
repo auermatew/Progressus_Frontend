@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import user from '../schema/user';
 
 interface ProtectedRouteProps {
   children: JSX.Element;

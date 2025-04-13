@@ -1,37 +1,55 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthApiService from '../../api/AuthApiService';
+import { useAuth } from '../../contexts/AuthContext';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { FaLock as LockIcon, FaUser as UserIcon, FaEnvelope as EmailIcon } from 'react-icons/fa';
 import Heading from '../../components/ui/Heading';
-import Input from '../../components/form/input';
 import SubmitButton from '../../components/form/submitButton';
 import Footer from '../../components/ui/Footer';
-
+import Input from '../../components/form/input';
 import './register.css';
 
+const RegisterSchema = z
+  .object({
+    fullName: z.string().min(1, 'Teljes név megadása kötelező'),
+    email: z.string().email('Érvénytelen email cím'),
+    password: z.string().min(8, 'A jelszónak legalább 8 karakter hosszúnak kell lennie'),
+    confirmPassword: z.string(),
+    role: z.enum(['TEACHER', 'STUDENT']),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'A jelszavak nem egyeznek',
+    path: ['confirmPassword'],
+  });
+
+type RegisterData = z.infer<typeof RegisterSchema>;
+
 const RegisterPage = () => {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState<'TEACHER' | 'STUDENT'>('TEACHER');
-
   const navigate = useNavigate();
+  const { register: registerUser } = useAuth();
+  const [statusMessage, setStatusMessage] = useState<{
+    type: 'error' | 'success';
+    text: string;
+  } | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      alert('A jelszavak nem egyeznek!');
-      return;
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterData>({
+    resolver: zodResolver(RegisterSchema),
+    defaultValues: { role: 'TEACHER' },
+  });
 
+  const onSubmit = async (data: RegisterData) => {
     try {
-      await AuthApiService.register({ fullName, email, password, role });
-      alert('Sikeres regisztráció!');
-      navigate('/login');
+      await registerUser(data);
+      setStatusMessage({ type: 'success', text: 'Sikeres regisztráció!' });
+      setTimeout(() => navigate('/login'), 1500);
     } catch (error) {
-      console.error(error);
-      alert('Sikertelen regisztráció.');
+      setStatusMessage({ type: 'error', text: 'Sikertelen regisztráció.' });
     }
   };
 
@@ -43,13 +61,20 @@ const RegisterPage = () => {
         </a>
       </nav>
       <div className="wrapper flex h-screen w-screen flex-1 flex-col items-center justify-center md:flex-row">
-        <div className="side-text hidden h-[100%] w-[40%] items-center justify-center md:flex">
-          {/* Ide jöhet egy kép vagy egy illusztráció */}
-        </div>
+        <div className="side-text hidden h-[100%] w-[40%] items-center justify-center md:flex"></div>
         <div className="register-form flex h-full w-full flex-col items-center justify-center md:h-[100%] md:w-[60%]">
           <div className="form-wrapper z-10 flex h-[100%] w-[100%] flex-col items-center justify-center p-4 md:w-[70%] md:border-x-2">
             <Heading content="Regisztráció" />
-            <form onSubmit={handleSubmit} className="w-full">
+            {statusMessage && (
+              <div
+                className={`mb-4 w-full rounded-lg px-4 py-2 text-center font-[Poppins] text-white ${
+                  statusMessage.type === 'error' ? 'bg-red-500' : 'bg-green-600'
+                }`}
+              >
+                {statusMessage.text}
+              </div>
+            )}
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full">
               <div className="form flex w-[100%] flex-col items-center justify-center md:flex-row">
                 <div className="column flex w-[100%] flex-col items-center justify-center md:w-[50%]">
                   <div className="input-wrapper m-2 flex w-full flex-row items-center border-b-2 border-white px-4 md:w-[90%]">
@@ -57,53 +82,57 @@ const RegisterPage = () => {
                     <Input
                       id="fullName"
                       type="text"
-                      value={fullName}
                       placeholder="Teljes név"
-                      onChange={(e) => setFullName(e.target.value)}
+                      {...register('fullName')}
                     />
                   </div>
+                  {errors.fullName && (
+                    <p className="text-sm text-red-400">{errors.fullName.message}</p>
+                  )}
+
                   <div className="input-wrapper m-2 flex w-full flex-row items-center border-b-2 border-white px-4 md:w-[90%]">
                     <EmailIcon size={20} className="left-6 block text-white" />
-                    <Input
-                      id="email"
-                      type="email"
-                      value={email}
-                      placeholder="Email cím"
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
+                    <Input id="email" type="email" placeholder="Email cím" {...register('email')} />
                   </div>
+                  {errors.email && <p className="text-sm text-red-400">{errors.email.message}</p>}
                 </div>
                 <div className="passwords flex w-[100%] flex-col items-center justify-center md:w-[50%]">
-                  <div className="input-wrapper m-2 flex w-full flex-row items-center border-b-2 border-white px-4 md:w-[90%]">
+                  <div
+                    className={`input-wrapper m-2 flex w-full flex-row items-center px-4 md:w-[90%]`}
+                  >
                     <LockIcon size={20} className="right-6 block text-white" />
                     <Input
                       id="password"
                       type="password"
-                      value={password}
                       placeholder="Jelszó"
-                      onChange={(e) => setPassword(e.target.value)}
+                      {...register('password')}
                     />
                   </div>
+                  {errors.password && (
+                    <p className="text-sm text-red-400">{errors.password.message}</p>
+                  )}
+
                   <div className="input-wrapper m-2 flex w-full flex-row items-center border-b-2 border-white px-4 md:w-[90%]">
                     <LockIcon size={20} className="right-6 block text-white" />
                     <Input
                       id="confirmPassword"
                       type="password"
-                      value={confirmPassword}
                       placeholder="Jelszó újra"
-                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      {...register('confirmPassword')}
                     />
                   </div>
+                  {errors.confirmPassword && (
+                    <p className="text-sm text-red-400">{errors.confirmPassword.message}</p>
+                  )}
                 </div>
               </div>
               <div className="role-select my-2 flex w-[100%] flex-row items-center justify-center">
                 <div className="inline-flex rounded-lg px-4">
                   <input
                     type="radio"
-                    name="role"
+                    value="TEACHER"
+                    {...register('role')}
                     id="teacherRadio"
-                    checked={role === 'TEACHER'}
-                    onChange={() => setRole('TEACHER')}
                     hidden
                   />
                   <label
@@ -116,10 +145,9 @@ const RegisterPage = () => {
                 <div className="inline-flex rounded-lg px-4">
                   <input
                     type="radio"
-                    name="role"
+                    value="STUDENT"
+                    {...register('role')}
                     id="studentRadio"
-                    checked={role === 'STUDENT'}
-                    onChange={() => setRole('STUDENT')}
                     hidden
                   />
                   <label
@@ -130,10 +158,13 @@ const RegisterPage = () => {
                   </label>
                 </div>
               </div>
+              {errors.role && (
+                <p className="text-center text-sm text-red-400">{errors.role.message}</p>
+              )}
+              <div className="submit flex w-full items-center justify-center p-4 md:mb-0">
+                <SubmitButton type="submit" content="Regisztráció" />
+              </div>
             </form>
-            <div className="submit flex w-full items-center justify-center p-4 md:mb-0">
-              <SubmitButton type="submit" content="Regisztráció" />
-            </div>
             <div className="new-user flex w-full flex-col items-center justify-center">
               <p className="font-[Poppins] text-gray-400">
                 Már regisztráltál?{' '}
