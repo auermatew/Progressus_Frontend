@@ -1,4 +1,4 @@
-import {
+import React, {
   createContext,
   useContext,
   useState,
@@ -14,23 +14,23 @@ import AuthApiService from '../api/AuthApiService';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (username: string, password: string) => Promise<void | AxiosError<ApiError>>;
-  logout: () => void;
-  refreshUser: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void | AxiosError<ApiError>>;
   register: (data: {
     fullName: string;
     email: string;
     password: string;
     role: 'TEACHER' | 'STUDENT';
   }) => Promise<void | AxiosError<ApiError>>;
+  logout: () => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   login: () => Promise.resolve(),
-  logout: () => {},
   register: () => Promise.resolve(),
+  logout: () => {},
   refreshUser: () => Promise.resolve(),
 });
 
@@ -50,20 +50,15 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   }, []);
 
-  const login = useCallback(async (username: string, password: string) => {
+  const login = useCallback(async (email: string, password: string) => {
     try {
-      const response = await AuthApiService.login({ username, password });
+      const response = await AuthApiService.login({ email, password });
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));
     } catch (error) {
       console.error('Login failed:', error);
       return error as AxiosError<ApiError>;
     }
-  }, []);
-
-  const logout = useCallback(() => {
-    setUser(null);
-    localStorage.removeItem('user');
   }, []);
 
   const register = useCallback(
@@ -75,11 +70,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     }) => {
       try {
         const response = await AuthApiService.register(data);
-        if (response && response.success) {
-          setUser(response as unknown as User);
-        } else {
-          console.error('Unexpected response format:', response.message);
-        }
+        setUser(response);
         localStorage.setItem('user', JSON.stringify(response));
       } catch (error) {
         console.error('Registration failed:', error);
@@ -88,6 +79,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     },
     []
   );
+
+  const logout = useCallback(() => {
+    setUser(null);
+    localStorage.removeItem('user');
+  }, []);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -98,7 +94,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, register, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

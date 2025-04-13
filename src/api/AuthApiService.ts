@@ -1,45 +1,32 @@
-import apiService from './apiService.ts';
-import { User } from '../schema/user';
+import api from './apiService';
 
-class AuthApiService {
-  static subUrl: string = "/auth";
+const login = async (data: { email: string; password: string }) => {
+  const response = await api.post('/auth/login', data);
+  return response.data;
+};
 
-  public static async login(credentials: { username: string; password: string }): Promise<User> {
-    const response = await apiService.post(`${AuthApiService.subUrl}/login`, credentials);
-    const data = response.data;
+const register = async (data: {
+  fullName: string;
+  email: string;
+  password: string;
+  role: 'TEACHER' | 'STUDENT';
+}) => {
+  const response = await api.post('/auth/register', data);
+  return response.data;
+};
 
-    if (response.status !== 200) {
-      throw new Error("Login failed");
-    }
+const getUser = async () => {
+  const response = await api.get('/auth/me');
+  return response.data;
+};
 
-    return data as User;
-  }
+const logout = async () => {
+  await api.post('/auth/logout');
+};
 
-  public static async getUser(): Promise<User> {
-    const response = await apiService.get(`${AuthApiService.subUrl}/me`);
-    const data = response.data;
-
-    if (response.status !== 200) {
-      throw new Error("Error fetching user data");
-    }
-
-    return data as User;
-  }
-
-  public static async logout(): Promise<void> {
-    await apiService.post(`${AuthApiService.subUrl}/logout`);
-  }
-
-  public static async register(body: {
-    fullName: string;
-    email: string;
-    password: string;
-    role: 'TEACHER' | 'STUDENT';
-  }): Promise<{ success: boolean; message: string }> {
-    const response = await apiService.post('/auth/register', body);
-    return response.data;
-  }
-
-}
-
-export default AuthApiService;
+export default {
+  login,
+  register,
+  getUser,
+  logout,
+};
