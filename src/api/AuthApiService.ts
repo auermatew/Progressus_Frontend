@@ -20,6 +20,11 @@ const getUser = async () => {
   return response.data;
 };
 
+const updateUser = async (p0: string, data: { fullName: string; email: string; }) => {
+  const response = await api.put('/api/users/me', data);
+  return response.data;
+};
+
 const logout = async () => {
   await api.post('/auth/logout');
 };
@@ -28,5 +33,6 @@ export default {
   login,
   register,
   getUser,
+  updateUser,
   logout,
 };

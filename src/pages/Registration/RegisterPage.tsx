@@ -48,7 +48,7 @@ const RegisterPage = () => {
       await registerUser(data);
       setStatusMessage({ type: 'success', text: 'Sikeres regisztráció!' });
       setTimeout(() => navigate('/login'), 1500);
-    } catch (error) {
+    } catch {
       setStatusMessage({ type: 'error', text: 'Sikertelen regisztráció.' });
     }
   };

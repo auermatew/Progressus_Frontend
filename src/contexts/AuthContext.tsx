@@ -21,6 +21,7 @@ interface AuthContextType {
     password: string;
     role: 'TEACHER' | 'STUDENT';
   }) => Promise<void | AxiosError<ApiError>>;
+  updateUserProfile: (data: { fullName: string; email: string }) => Promise<User>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -30,6 +31,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   login: () => Promise.resolve(),
   register: () => Promise.resolve(),
+  updateUserProfile: () => Promise.resolve({} as User),
   logout: () => {},
   refreshUser: () => Promise.resolve(),
 });
@@ -48,6 +50,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       console.error('Error fetching user data:', error);
       setUser(null);
     }
+  }, []);
+
+  const updateUserProfile = useCallback(async (data: { fullName: string; email: string }) => {
+    const res = await AuthApiService.updateUser('/api/users/me', data);
+    return res.data;
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
@@ -94,7 +101,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, login, register, updateUserProfile, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
