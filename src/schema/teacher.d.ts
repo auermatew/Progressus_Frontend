@@ -9,3 +9,13 @@ export interface Teacher {
     subjects: Subject[];
 }
 
+export interface CreateTeacherDto {
+    bio: string;
+    subjects: string[];
+}
+
+export interface EditTeacherDto {
+    bio: string;
+    available: boolean;
+    profilePicture?: string;
+}

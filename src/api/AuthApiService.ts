@@ -1,45 +1,40 @@
 import api from './apiService';
 
-const login = async (data: { email: string; password: string }) => {
-  const response = await api.post('/auth/login', data);
-  return response.data;
-};
-
 const register = async (data: {
   fullName: string;
   email: string;
   password: string;
   role: 'TEACHER' | 'STUDENT';
 }) => {
-  const response = await api.post('/auth/register', data);
-  return response.data;
+  const res = await api.post('/api/v1/auth/registration', data);
+  return res.data;
+};
+
+const login = async (data: { email: string; password: string }) => {
+  const res = await api.post('/api/v1/auth/login', data);
+  return res.data;
 };
 
 const getUser = async () => {
-  const response = await api.get('/auth/me');
-  return response.data;
+  const res = await api.get('/api/v1/auth/authenticate');
+  return res.data;
 };
 
 const editUser = async (data: {
   fullName: string;
   email: string;
   password?: string;
-  profilePicture?: string;
   phoneNumber?: string;
   description?: string;
+  profilePicture?: string;
 }) => {
-  const response = await api.patch('/api/users/edit', data);
-  return response.data;
-};
-
-const logout = async () => {
-  await api.post('/auth/logout');
+  const res = await api.patch('/api/v1/users/edit', data);
+  return res.data;
 };
 
 export default {
-  login,
   register,
+  login,
   getUser,
   editUser,
-  logout,
 };

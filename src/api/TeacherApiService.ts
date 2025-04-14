@@ -1,32 +1,34 @@
-import {Teacher} from "../schema/teacher";
-import apiService from "./apiService";
+import api from './apiService'; // your configured Axios instance
+import { CreateTeacherDto, EditTeacherDto } from '../schema/teacher'; // define these types accordingly
 
-export class TeacherApiService {
-    static subUrl: string = "/teacher";
-    public static async get(url: string = ""): Promise<Teacher[]> {
-        const response = await apiService.get(`${TeacherApiService.subUrl + url}`);
-        const data = response.data;
-        if (response.status !== 200) {
-            throw new Error("Error fetching data");
-        }
-        return data as Teacher[];
-    }
+export const TeacherApiService = {
+  // For STUDENT: Register as a teacher
+  registerAsTeacher: async (data: CreateTeacherDto) => {
+    const res = await api.post('/api/v1/teachers/teacher/registration', data);
+    return res.data;
+  },
 
-    public static async post(data: Teacher): Promise<Teacher> {
-        const response = await apiService.post(TeacherApiService.subUrl, data);
-        const result = response.data;
-        if (response.status !== 200) {
-            throw new Error("Error fetching data");
-        }
-        return result as Teacher;
-    }
+  // For TEACHER: Edit teacher profile
+  editTeacher: async (data: EditTeacherDto) => {
+    const res = await api.patch('/api/v1/teachers/teacher/edit', data);
+    return res.data;
+  },
 
-    public static async delete(id: string = ""): Promise<Teacher> {
-        const response = await apiService.delete(`${TeacherApiService.subUrl}/${id}`);
-        const result = response.data;
-        if (response.status !== 200) {
-            throw new Error("Error fetching data");
-        }
-        return result as Teacher;
-    }
-}
+  // For TEACHER: Delete their own profile
+  deleteTeacher: async () => {
+    const res = await api.delete('/api/v1/teachers/teacher/delete');
+    return res.data;
+  },
+
+  // Public: Get teacher by ID
+  getTeacherById: async (teacherId: number) => {
+    const res = await api.get(`/api/v1/teachers/teacher/${teacherId}`);
+    return res.data;
+  },
+
+  // Public: Get all teachers 
+  getAllTeachers: async (page = 0, size = 15) => {
+    const res = await api.get(`/api/v1/teachers/all?page=${page}&size=${size}`);
+    return res.data;
+  },
+};

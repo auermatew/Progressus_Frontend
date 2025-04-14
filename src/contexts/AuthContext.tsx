@@ -21,9 +21,16 @@ interface AuthContextType {
     password: string;
     role: 'TEACHER' | 'STUDENT';
   }) => Promise<void | AxiosError<ApiError>>;
-  updateUserProfile: (data: { fullName: string; email: string }) => Promise<User>;
   logout: () => void;
   refreshUser: () => Promise<void>;
+  updateUserProfile: (data: {
+    fullName: string;
+    email: string;
+    password?: string;
+    phoneNumber?: string;
+    description?: string;
+    profilePicture?: string;
+  }) => Promise<any>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -31,9 +38,9 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   login: () => Promise.resolve(),
   register: () => Promise.resolve(),
-  updateUserProfile: () => Promise.resolve({} as User),
   logout: () => {},
   refreshUser: () => Promise.resolve(),
+  updateUserProfile: () => Promise.resolve(),
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -42,37 +49,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const refreshUser = useCallback(async () => {
-    try {
-      const response = await AuthApiService.getUser();
-      setUser(response);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-      setUser(null);
-    }
-  }, []);
-
-  const updateUserProfile = useCallback(
-    async (data: {
-      fullName: string;
-      email: string;
-      password?: string;
-      profilePicture?: string;
-      phoneNumber?: string;
-      description?: string;
-    }) => {
-      const updated = await AuthApiService.editUser(data);
-      setUser(updated.user);
-      return updated;
-    },
-    []
-  );
-
   const login = useCallback(async (email: string, password: string) => {
     try {
       const response = await AuthApiService.login({ email, password });
-      setUser(response);
-      localStorage.setItem('user', JSON.stringify(response));
+      setUser(response.user || response);
+      localStorage.setItem('user', JSON.stringify(response.user || response));
     } catch (error) {
       console.error('Login failed:', error);
       return error as AxiosError<ApiError>;
@@ -88,8 +69,8 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     }) => {
       try {
         const response = await AuthApiService.register(data);
-        setUser(response);
-        localStorage.setItem('user', JSON.stringify(response));
+        setUser(response.user || response);
+        localStorage.setItem('user', JSON.stringify(response.user || response));
       } catch (error) {
         console.error('Registration failed:', error);
         return error as AxiosError<ApiError>;
@@ -98,10 +79,36 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     []
   );
 
+  const refreshUser = useCallback(async () => {
+    try {
+      const response = await AuthApiService.getUser();
+      setUser(response.user || response);
+    } catch (error) {
+      console.error('Could not refresh user:', error);
+      setUser(null);
+    }
+  }, []);
+
   const logout = useCallback(() => {
     setUser(null);
     localStorage.removeItem('user');
   }, []);
+
+  const updateUserProfile = useCallback(
+    async (data: {
+      fullName: string;
+      email: string;
+      password?: string;
+      phoneNumber?: string;
+      description?: string;
+      profilePicture?: string;
+    }) => {
+      const updated = await AuthApiService.editUser(data);
+      setUser(updated.user || updated);
+      return updated;
+    },
+    []
+  );
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -112,9 +119,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ user, loading, login, register, updateUserProfile, logout, refreshUser }}
-    >
+    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );

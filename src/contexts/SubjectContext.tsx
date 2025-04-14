@@ -14,18 +14,19 @@ import { SubjectApiService } from '../api/SubjectApiService';
 interface SubjectContextType {
   subjects: Subject[];
   setSubjects: React.Dispatch<React.SetStateAction<Subject[]>>;
-  createSubject: (data: {
-    name: string;
-    isVerified: boolean;
-  }) => Promise<void | AxiosError<ApiError>>;
+  createSubjects: (subjects: { subject: string; isVerified: boolean }[]) => Promise<void | AxiosError<ApiError>>;
+  editSubject: (id: string, data: { subject: string; isVerified: boolean }) => Promise<void | AxiosError<ApiError>>;
   deleteSubject: (id: string) => Promise<void | AxiosError<ApiError>>;
+  getSubjectById: (id: string) => Promise<Subject | undefined>;
 }
 
 const SubjectContext = createContext<SubjectContextType>({
   subjects: [],
   setSubjects: () => {},
-  createSubject: () => Promise.resolve(),
+  createSubjects: () => Promise.resolve(),
+  editSubject: () => Promise.resolve(),
   deleteSubject: () => Promise.resolve(),
+  getSubjectById: () => Promise.resolve(undefined),
 });
 
 export const useSubject = () => useContext(SubjectContext);
@@ -42,13 +43,26 @@ const SubjectProvider = ({ children }: PropsWithChildren) => {
     }
   }, []);
 
-  const createSubject = useCallback(
-    async (data: { name: string; isVerified: boolean }) => {
+  const createSubjects = useCallback(
+    async (subjectsList: { subject: string; isVerified: boolean }[]) => {
       try {
-        await SubjectApiService.create(data);
+        await SubjectApiService.create({ subjects: subjectsList });
         await getSubjects();
       } catch (error) {
-        console.error('Error creating subject:', error);
+        console.error('Error creating subjects:', error);
+        return error as AxiosError<ApiError>;
+      }
+    },
+    [getSubjects]
+  );
+
+  const editSubject = useCallback(
+    async (id: string, data: { subject: string; isVerified: boolean }) => {
+      try {
+        await SubjectApiService.edit(id, data);
+        await getSubjects();
+      } catch (error) {
+        console.error('Error editing subject:', error);
         return error as AxiosError<ApiError>;
       }
     },
@@ -68,6 +82,14 @@ const SubjectProvider = ({ children }: PropsWithChildren) => {
     [getSubjects]
   );
 
+  const getSubjectById = useCallback(async (id: string) => {
+    try {
+      return await SubjectApiService.getById(id);
+    } catch (error) {
+      console.error('Error fetching subject by ID:', error);
+    }
+  }, []);
+
   useEffect(() => {
     getSubjects();
   }, [getSubjects]);
@@ -77,8 +99,10 @@ const SubjectProvider = ({ children }: PropsWithChildren) => {
       value={{
         subjects,
         setSubjects,
-        createSubject,
+        createSubjects,
+        editSubject,
         deleteSubject,
+        getSubjectById,
       }}
     >
       {children}

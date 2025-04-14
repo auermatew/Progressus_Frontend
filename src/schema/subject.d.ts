@@ -1,5 +1,5 @@
 export interface Subject {
     id: number;
-    name: string;
+    subject: string;
     isVerified: boolean;
 }

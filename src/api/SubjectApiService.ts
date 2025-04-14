@@ -1,44 +1,27 @@
-import apiService from './apiService';
-import { Subject } from '../schema/subject';
+import api from './apiService';
 
-export class SubjectApiService {
-  static subUrl: string = "/subject";
+export const SubjectApiService = {
+  getAll: async (page = 0, size = 15) => {
+    const res = await api.get(`/api/v1/subjects/all?page=${page}&size=${size}`);
+    return res.data.content;
+  },
 
-  public static async getAll(): Promise<Subject[]> {
-    const response = await apiService.get(SubjectApiService.subUrl);
-    if (response.status !== 200) {
-      throw new Error("Error fetching subjects");
-    }
-    return response.data as Subject[];
-  }
+  getById: async (id: string) => {
+    const res = await api.get(`/api/v1/subjects/${id}`);
+    return res.data;
+  },
 
-  public static async getById(id: string): Promise<Subject> {
-    const response = await apiService.get(`${SubjectApiService.subUrl}/${id}`);
-    if (response.status !== 200) {
-      throw new Error("Error fetching subject");
-    }
-    return response.data as Subject;
-  }
+  create: async (data: { subjects: { subject: string; isVerified: boolean }[] }) => {
+    const res = await api.post(`/api/v1/subjects/create`, data);
+    return res.data;
+  },
 
-  public static async create(data: { name: string; isVerified: boolean }): Promise<Subject> {
-    const response = await apiService.post(SubjectApiService.subUrl, data);
-    if (response.status !== 200) {
-      throw new Error("Error creating subject");
-    }
-    return response.data as Subject;
-  }
+  edit: async (id: string, data: { subject: string; isVerified: boolean }) => {
+    const res = await api.patch(`/api/v1/subjects/edit/${id}`, data);
+    return res.data;
+  },
 
-  public static async update(id: string, data: { name?: string; isVerified?: boolean }): Promise<Subject> {
-    const response = await apiService.patch(`${SubjectApiService.subUrl}/${id}`, data);
-    if (response.status !== 200) {
-      throw new Error("Error updating subject");
-    }
-    return response.data as Subject;
-  }
-
-  public static async delete(id: string): Promise<void> {
-    await apiService.delete(`${SubjectApiService.subUrl}/${id}`);
-  }
-}
-
-export default SubjectApiService;
+  delete: async (id: string) => {
+    await api.delete(`/api/v1/subjects/delete/${id}`);
+  },
+};
