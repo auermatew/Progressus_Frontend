@@ -20,8 +20,15 @@ const getUser = async () => {
   return response.data;
 };
 
-const updateUser = async (p0: string, data: { fullName: string; email: string; }) => {
-  const response = await api.put('/api/users/me', data);
+const editUser = async (data: {
+  fullName: string;
+  email: string;
+  password?: string;
+  profilePicture?: string;
+  phoneNumber?: string;
+  description?: string;
+}) => {
+  const response = await api.patch('/api/users/edit', data);
   return response.data;
 };
 
@@ -33,6 +40,6 @@ export default {
   login,
   register,
   getUser,
-  updateUser,
+  editUser,
   logout,
 };

@@ -131,13 +131,11 @@ const App = () => {
           <Route
             path="/mypage"
             element={
-              <ProtectedRoute requiredRole="TEACHER">
                 <ErrorBoundary fallback="Error">
                   <Suspense fallback={<Loading />}>
                     <MyPage />
                   </Suspense>
                 </ErrorBoundary>
-              </ProtectedRoute>
             }
           />
         </Routes>

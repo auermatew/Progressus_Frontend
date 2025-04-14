@@ -52,10 +52,21 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   }, []);
 
-  const updateUserProfile = useCallback(async (data: { fullName: string; email: string }) => {
-    const res = await AuthApiService.updateUser('/api/users/me', data);
-    return res.data;
-  }, []);
+  const updateUserProfile = useCallback(
+    async (data: {
+      fullName: string;
+      email: string;
+      password?: string;
+      profilePicture?: string;
+      phoneNumber?: string;
+      description?: string;
+    }) => {
+      const updated = await AuthApiService.editUser(data);
+      setUser(updated.user);
+      return updated;
+    },
+    []
+  );
 
   const login = useCallback(async (email: string, password: string) => {
     try {
@@ -101,7 +112,9 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, updateUserProfile, logout, refreshUser }}>
+    <AuthContext.Provider
+      value={{ user, loading, login, register, updateUserProfile, logout, refreshUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

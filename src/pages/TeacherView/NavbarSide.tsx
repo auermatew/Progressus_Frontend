@@ -32,7 +32,7 @@ export default function NavbarSide() {
         icon: <FaBookJournalWhills size={25} />,
         href: '/lessons',
       },
-      { id: 'students', text: 'Diákjaim', icon: <PiStudentFill size={25} />, href: '/students' },
+      { id: 'students', text: 'Óráim', icon: <PiStudentFill size={25} />, href: '/students' },
       { id: 'calendar', text: 'Naptár', icon: <MdCalendarMonth size={25} />, href: '/calendar' },
     ],
     []
