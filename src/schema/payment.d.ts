@@ -1,3 +1,4 @@
+import { User } from './user';
 export interface Transaction {
   id: number;
   billingDetails: BillingDetails;
@@ -7,8 +8,11 @@ export interface Transaction {
 
 export interface BillingDetails {
   id: number;
-  amount: number;
-  currency: string;
+  user: User;
+  address_city: string;
+  address_zip: string;
+  address_street: string;
+  address_country: string;
 }
 
 export interface LessonReservation {
