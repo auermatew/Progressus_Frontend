@@ -7,8 +7,7 @@ import { PiStudentFill } from 'react-icons/pi';
 import { TbLogout } from 'react-icons/tb';
 import { BsPersonLinesFill } from 'react-icons/bs';
 import { LuChevronFirst, LuChevronLast } from 'react-icons/lu';
-import { useLocation, Link } from 'react-router-dom';
-import User from './user.jpg';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import '../../assets/fonts/fonts.css';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -16,7 +15,8 @@ export default function NavbarSide() {
   const [isOpen, setIsOpen] = useState(true);
   const [activeItem, setActiveItem] = useState('');
   const location = useLocation();
-  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
 
   const navItems = useMemo(
     () => [
@@ -56,7 +56,6 @@ export default function NavbarSide() {
     >
       <nav className="flex h-full flex-col border-r shadow-sm">
         <div className="flex items-center justify-between p-4 pb-4">
-          {/* <img src={Logo} className={`transition-all ${isOpen ? "w-12" : "w-0"}`} alt="Logo" /> */}
           <a
             href="/"
             className={`text-3xl text-white transition-all ${isOpen ? 'block' : 'hidden'} font-[Pacifico]`}
@@ -98,6 +97,7 @@ export default function NavbarSide() {
                 onClick={() => {
                   setActiveItem('logout');
                   logout();
+                  navigate('/');
                 }}
                 isOpen={isOpen}
               />
@@ -114,12 +114,16 @@ export default function NavbarSide() {
             </div>
           </ul>
           <div className="flex items-center p-1">
-            <img src={User} alt="User" className="h-12 w-12 rounded-lg" />
-            {isOpen && (
+            <img
+              src={user?.profilePicture || 'https://via.placeholder.com/80'}
+              alt="User"
+              className="h-12 w-12 rounded-lg object-cover"
+            />
+            {isOpen && user && (
               <div className="ml-3 flex w-full items-center justify-between">
                 <div className="leading-4">
-                  <h4 className="font-semibold text-white">Lovas Margaret</h4>
-                  <span className="text-xs text-gray-400">lovas@petrik.hu</span>
+                  <h4 className="font-semibold text-white">{user.fullName}</h4>
+                  <span className="text-xs text-gray-400">{user.email}</span>
                 </div>
                 <More size={24} className="text-white" />
               </div>
