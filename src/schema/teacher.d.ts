@@ -5,7 +5,10 @@ export interface Subject {
 
 export interface Teacher {
     id: number;
-    name: string;
+    fullName: string;
+    profilePicture: string;
+    bio: string;
+    available: boolean;
     subjects: Subject[];
 }
 

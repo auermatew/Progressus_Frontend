@@ -1,3 +1,4 @@
+// Updated TeacherContext.tsx for ExplorePage compatibility
 import React, {
   createContext,
   useContext,
@@ -6,7 +7,7 @@ import React, {
   PropsWithChildren,
   useEffect,
 } from 'react';
-import { Subject, Teacher } from '../schema/teacher';
+import { Subject, Teacher, CreateTeacherDto } from '../schema/teacher';
 import { ApiError } from '../schema/api';
 import { AxiosError } from 'axios';
 import { TeacherApiService } from '../api/TeacherApiService';
@@ -16,8 +17,10 @@ interface TeacherContextType {
   bySubject: Subject[];
   setTeachers: React.Dispatch<React.SetStateAction<Teacher[]>>;
   setBySubject: React.Dispatch<React.SetStateAction<Subject[]>>;
-  createTeacher: (body: object) => Promise<void | AxiosError<ApiError>>;
-  deleteTeacher: (id: string) => Promise<void | AxiosError<ApiError>>;
+  createTeacher: (body: CreateTeacherDto) => Promise<void | AxiosError<ApiError>>;
+  deleteTeacher: () => Promise<void | AxiosError<ApiError>>;
+  getTeachers: () => Promise<void>;
+  getBySubject: () => Promise<void>;
 }
 
 const TeacherContext = createContext<TeacherContextType>({
@@ -27,6 +30,8 @@ const TeacherContext = createContext<TeacherContextType>({
   setBySubject: () => {},
   createTeacher: () => Promise.resolve(),
   deleteTeacher: () => Promise.resolve(),
+  getTeachers: async () => {},
+  getBySubject: async () => {},
 });
 
 export const useTeacher = () => useContext(TeacherContext);
@@ -54,29 +59,29 @@ const TeacherProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const createTeacher = useCallback(
-    async (body: object) => {
+    async (body: CreateTeacherDto) => {
       try {
-        await TeacherApiService.post(body as Teacher);
+        await TeacherApiService.post(body);
         await getTeachers();
       } catch (error) {
         console.error('Error creating teacher:', error);
         return error as AxiosError<ApiError>;
       }
     },
-    [getTeachers, getBySubject]
+    [getTeachers]
   );
 
   const deleteTeacher = useCallback(
-    async (id: string) => {
+    async () => {
       try {
-        await TeacherApiService.delete(id);
+        await TeacherApiService.deleteTeacher();
         await getTeachers();
       } catch (error) {
         console.error('Error deleting teacher:', error);
         return error as AxiosError<ApiError>;
       }
     },
-    [getTeachers, getBySubject]
+    [getTeachers]
   );
 
   useEffect(() => {
@@ -93,6 +98,8 @@ const TeacherProvider = ({ children }: PropsWithChildren) => {
         setBySubject,
         createTeacher,
         deleteTeacher,
+        getTeachers,
+        getBySubject,
       }}
     >
       {children}

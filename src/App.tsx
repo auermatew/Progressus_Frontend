@@ -1,4 +1,4 @@
-// Code: Main App Component
+// Updated App.tsx with route-specific providers
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Loading from './components/ui/Loading';
@@ -7,6 +7,11 @@ import ProtectedRoute from './utilities/ProtectedRoute';
 import MyPage from './pages/TeacherView/MyPage';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import SubjectAdminPage from './pages/SubjectAdminPage';
+import AuthProvider from './contexts/AuthContext';
+import TeacherProvider from './contexts/TeacherContext';
+import SubjectProvider from './contexts/SubjectContext';
+import PaymentProvider from './contexts/PaymentContext';
+import TransactionProvider from './contexts/TransactionContext';
 
 const LandingPage = lazy(() => import('./pages/Landingp/LandingPage'));
 const HomePage = lazy(() => import('./pages/Homep/HomePage'));
@@ -17,9 +22,12 @@ const Lessons = lazy(() => import('./pages/TeacherView/Lessons'));
 const Students = lazy(() => import('./pages/TeacherView/Students'));
 const Calendar = lazy(() => import('./pages/TeacherView/Calendar'));
 
+const ExplorePage = lazy(() => import('./pages/StudentView/ExplorePage'));
+const StudentBoard = lazy(() => import('./pages/StudentView/StudentDash'));
+
 const App = () => {
   return (
-    <>
+    <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route
@@ -81,11 +89,13 @@ const App = () => {
             path="/dashboard"
             element={
               <ProtectedRoute requiredRole="TEACHER">
-                <ErrorBoundary fallback="Error">
-                  <Suspense fallback={<Loading />}>
-                    <DashboardPage />
-                  </Suspense>
-                </ErrorBoundary>
+                <TeacherProvider>
+                  <ErrorBoundary fallback="Error">
+                    <Suspense fallback={<Loading />}>
+                      <DashboardPage />
+                    </Suspense>
+                  </ErrorBoundary>
+                </TeacherProvider>
               </ProtectedRoute>
             }
           />
@@ -94,11 +104,13 @@ const App = () => {
             path="/lessons"
             element={
               <ProtectedRoute>
-                <ErrorBoundary fallback="Error">
-                  <Suspense fallback={<Loading />}>
-                    <Lessons />
-                  </Suspense>
-                </ErrorBoundary>
+                <TeacherProvider>
+                  <ErrorBoundary fallback="Error">
+                    <Suspense fallback={<Loading />}>
+                      <Lessons />
+                    </Suspense>
+                  </ErrorBoundary>
+                </TeacherProvider>
               </ProtectedRoute>
             }
           />
@@ -107,11 +119,13 @@ const App = () => {
             path="/students"
             element={
               <ProtectedRoute requiredRole="TEACHER">
-                <ErrorBoundary fallback="Error">
-                  <Suspense fallback={<Loading />}>
-                    <Students />
-                  </Suspense>
-                </ErrorBoundary>
+                <TeacherProvider>
+                  <ErrorBoundary fallback="Error">
+                    <Suspense fallback={<Loading />}>
+                      <Students />
+                    </Suspense>
+                  </ErrorBoundary>
+                </TeacherProvider>
               </ProtectedRoute>
             }
           />
@@ -120,11 +134,13 @@ const App = () => {
             path="/calendar"
             element={
               <ProtectedRoute requiredRole="TEACHER">
-                <ErrorBoundary fallback="Error">
-                  <Suspense fallback={<Loading />}>
-                    <Calendar />
-                  </Suspense>
-                </ErrorBoundary>
+                <TeacherProvider>
+                  <ErrorBoundary fallback="Error">
+                    <Suspense fallback={<Loading />}>
+                      <Calendar />
+                    </Suspense>
+                  </ErrorBoundary>
+                </TeacherProvider>
               </ProtectedRoute>
             }
           />
@@ -132,27 +148,60 @@ const App = () => {
           <Route
             path="/mypage"
             element={
-              <ErrorBoundary fallback="Error">
-                <Suspense fallback={<Loading />}>
-                  <MyPage />
-                </Suspense>
-              </ErrorBoundary>
+              <TeacherProvider>
+                <PaymentProvider>
+                  <ErrorBoundary fallback="Error">
+                    <Suspense fallback={<Loading />}>
+                      <MyPage />
+                    </Suspense>
+                  </ErrorBoundary>
+                </PaymentProvider>
+              </TeacherProvider>
             }
           />
 
           <Route
             path="/admin/subjects"
             element={
-              <ErrorBoundary fallback="Error">
-                <Suspense fallback={<Loading />}>
-                  <SubjectAdminPage />
-                </Suspense>
-              </ErrorBoundary>
+              <SubjectProvider>
+                <ErrorBoundary fallback="Error">
+                  <Suspense fallback={<Loading />}>
+                    <SubjectAdminPage />
+                  </Suspense>
+                </ErrorBoundary>
+              </SubjectProvider>
+            }
+          />
+
+          <Route
+            path="/explore"
+            element={
+              <TeacherProvider>
+                <ErrorBoundary fallback="Error">
+                  <Suspense fallback={<Loading />}>
+                    <ExplorePage />
+                  </Suspense>
+                </ErrorBoundary>
+              </TeacherProvider>
+            }
+          />
+          <Route
+            path="/studentboard"
+            element={
+              <TransactionProvider>
+                <PaymentProvider>
+                  <ErrorBoundary fallback={<div>Something went wrong</div>}>
+                    <Suspense fallback={<Loading />}>
+                      <StudentBoard />
+                    </Suspense>
+                  </ErrorBoundary>
+                </PaymentProvider>
+              </TransactionProvider>
             }
           />
         </Routes>
       </BrowserRouter>
-    </>
+    </AuthProvider>
   );
 };
 
