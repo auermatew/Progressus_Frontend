@@ -34,7 +34,7 @@ export default function NavbarSideSt() {
         id: 'calendar',
         text: 'Naptár',
         icon: <MdCalendarMonth size={25} />,
-        href: '/calendar',
+        href: '/studentcalendar',
       },
     ],
     []

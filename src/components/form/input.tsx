@@ -29,7 +29,7 @@ const Input: React.FC<inputProps> = ({ id, type, value, onChange, placeholder })
             disabled={false}
           />
           <p
-            className="-ml-12 relative top-2 cursor-pointer text-3xl text-white select-none"
+            className="-ml-12 relative top-3 cursor-pointer text-3xl text-white select-none"
             onClick={() => setVisible(!visible)}
           >
             {visible ? '🙈' : '🙉'}

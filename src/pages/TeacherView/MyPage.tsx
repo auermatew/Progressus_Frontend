@@ -68,58 +68,68 @@ const MyPage = () => {
           >
             <div>
               <label htmlFor="fullName" className="text-lg font-semibold">Teljes név</label>
-              <Input
-                id="fullName"
-                type="text"
-                placeholder="Teljes név"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-              />
+              <div className="border rounded-2xl my-2">
+                <Input
+                  id="fullName"
+                  type="text"
+                  placeholder="Teljes név"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+              </div>
             </div>
 
             <div>
               <label htmlFor="email" className="text-lg font-semibold">Email cím</label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Email cím"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled
-              />
+              <div className="border rounded-2xl my-2">
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Email cím"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled
+                />
+              </div>
             </div>
 
-            <div>
+            <div className='bg-[#2B0A3D]'>
               <label htmlFor="password" className="text-lg font-semibold">Jelszó (opcionális)</label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Új jelszó"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div className="border rounded-2xl my-2">
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Új jelszó"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
             </div>
 
             <div>
               <label htmlFor="phoneNumber" className="text-lg font-semibold">Telefonszám</label>
-              <Input
-                id="phoneNumber"
-                type="text"
-                placeholder="Pl. +36301234567"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
+              <div className="border rounded-2xl my-2">
+                <Input
+                  id="phoneNumber"
+                  type="text"
+                  placeholder="Pl. +36301234567"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </div>
             </div>
 
             <div className="md:col-span-2">
               <label htmlFor="description" className="text-lg font-semibold">Bemutatkozás</label>
-              <textarea
-                id="description"
-                placeholder="Írj magadról pár szót..."
-                className="w-full rounded-xl bg-transparent border border-white text-white p-3 min-h-[120px] focus:outline-none"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
+              <div className="my-2">
+                <textarea
+                  id="description"
+                  placeholder="Írj magadról pár szót..."
+                  className="w-full rounded-xl bg-transparent border border-white text-white p-3 min-h-[120px] focus:outline-none"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
             </div>
 
             <div className="md:col-span-2">
