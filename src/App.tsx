@@ -1,4 +1,4 @@
-// Updated App.tsx with route-specific providers
+//TODO: Add ProtectedRoute component to protect routes
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Loading from './components/ui/Loading';

@@ -1,5 +1,6 @@
 import React from 'react';
 import NavbarSideSt from './NavbarSideSt';
+import StudentRequests from '../../components/StudentRequests';
 import Footer from '../../components/ui/Footer';
 import { useAuth } from '../../contexts/AuthContext';
 import { usePayment } from '../../contexts/PaymentContext';
@@ -16,7 +17,7 @@ const StudentDash = () => {
       <div className="wrapper min-h-screen w-full pl-24 pr-6 pt-6 pb-12 text-white bg-gradient-to-b from-black to-[#1A1A1A] font-[Poppins]">
         <h1 className="text-4xl font-bold mb-6">Üdvözlünk, {user?.fullName}!</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           <div className="rounded-xl bg-[#2B0A3D] p-6 shadow-md">
             <h2 className="text-lg font-semibold mb-2">Fiók információk</h2>
             <p><span className="text-gray-400">Email:</span> {user?.email}</p>
@@ -50,6 +51,11 @@ const StudentDash = () => {
               <p className="text-gray-400">Nincs elérhető tranzakció</p>
             )}
           </div>
+        </div>
+
+        {/* Foglalások (óra kérések) - teljes szélességű szekció */}
+        <div>
+          <StudentRequests />
         </div>
       </div>
       <Footer />

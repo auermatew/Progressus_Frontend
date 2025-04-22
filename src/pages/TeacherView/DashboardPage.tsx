@@ -73,10 +73,10 @@ const DashboardPage = () => {
 
         <div className="mb-4">
           <h2 className="mb-4 text-2xl font-semibold">Függőben lévő órakérések</h2>
-          {/* <TeacherRequests /> */}
+          <TeacherRequests />
 
           {/* Uncomment this section to display mock requests */}
-          {mockRequests.length === 0 ? (
+          {/* {mockRequests.length === 0 ? (
             <p className="text-gray-400">Nincsenek függőben lévő kérések.</p>
           ) : (
             <div className="overflow-x-auto">
@@ -107,7 +107,7 @@ const DashboardPage = () => {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
       <Footer />
