@@ -7,12 +7,18 @@ const register = async (data: {
   role: 'TEACHER' | 'STUDENT';
 }) => {
   const res = await api.post('/api/v1/auth/registration', data);
-  return res.data;
+  return {
+    token: res.data.token,
+    user: res.data.user || res.data,
+  };
 };
 
 const login = async (data: { email: string; password: string }) => {
   const res = await api.post('/api/v1/auth/login', data);
-  return res.data;
+  return {
+    token: res.data.token,
+    user: res.data.user || res.data,
+  };
 };
 
 const getUser = async () => {

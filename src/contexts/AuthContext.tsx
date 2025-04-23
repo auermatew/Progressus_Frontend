@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useContext,
   useState,
@@ -52,8 +52,8 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   const login = useCallback(async (email: string, password: string) => {
     try {
       const response = await AuthApiService.login({ email, password });
-      setUser(response.user || response);
-      localStorage.setItem('user', JSON.stringify(response.user || response));
+      setUser(response.user);
+      localStorage.setItem('token', response.token);
     } catch (error) {
       console.error('Login failed:', error);
       return error as AxiosError<ApiError>;
@@ -70,7 +70,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       try {
         const response = await AuthApiService.register(data);
         setUser(response.user || response);
-        localStorage.setItem('user', JSON.stringify(response.user || response));
+        localStorage.setItem('token', response.token);
       } catch (error) {
         console.error('Registration failed:', error);
         return error as AxiosError<ApiError>;
@@ -91,7 +91,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const logout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }, []);
 
   const updateUserProfile = useCallback(
@@ -111,12 +111,13 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   );
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const token = localStorage.getItem('token');
+    if (token) {
+      refreshUser();
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
-  }, []);
+  }, [refreshUser]);
 
   return (
     <AuthContext.Provider
