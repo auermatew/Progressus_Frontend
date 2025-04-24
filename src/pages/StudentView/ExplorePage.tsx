@@ -1,3 +1,4 @@
+import api from '../../api/apiService';
 import { useEffect, useState } from 'react';
 import { useTeacher } from '../../contexts/TeacherContext';
 import NavbarSideSt from './NavbarSideSt';
@@ -38,11 +39,8 @@ const ExplorePage = () => {
 
   const handleOpenModal = async (teacher: Teacher) => {
     try {
-      const res = await fetch(`/api/v1/teacher-class-lessons/teacher/${teacher.id}`, {
-        method: 'GET',
-        credentials: 'include',
-      });
-      const lessonSlots = await res.json();
+      const res = await api.get(`/api/v1/teacher-class-lessons/teacher/${teacher.id}`);
+      const lessonSlots = res.data;
       setSelectedTeacher({ ...teacher, lessonSlots });
       setModalOpen(true);
     } catch (error) {
@@ -53,22 +51,20 @@ const ExplorePage = () => {
 
   const handleSendRequest = async (lessonId: number) => {
     try {
-      await fetch(`/api/v1/teacher-class-lessons/reserve/${lessonId}`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      await api.post(`/api/v1/teacher-class-lessons/reserve/${lessonId}`);
       setShowPopup(true);
       setModalOpen(false);
       setSelectedTeacher(null);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Foglalás hiba:', error);
       alert('Hiba történt a foglalás során.');
 
-      if (error instanceof Error && error.message.includes('already reserved')) {
+      const msg = error?.response?.data?.message || error.message || '';
+      if (msg.includes('already reserved')) {
         alert('Ez az óra már le van foglalva.');
-      } else if (error instanceof Error && error.message.includes('already submitted')) {
+      } else if (msg.includes('already submitted')) {
         alert('Már lefoglaltad ezt az órát.');
-      } else if (error instanceof Error && error.message.includes('own lesson')) {
+      } else if (msg.includes('own lesson')) {
         alert('Nem foglalhatod le a saját órádat!');
       } else {
         alert('Ismeretlen hiba történt a foglalás során.');

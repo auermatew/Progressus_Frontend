@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import api from '../api/apiService';
 
 interface Reservation {
   id: number;
@@ -26,10 +27,8 @@ const TeacherRequests = () => {
 
   const fetchLessons = async () => {
     try {
-      const res = await fetch(`/api/v1/teacher-class-lessons/teacher/${user?.id}`, {
-        credentials: 'include',
-      });
-      const data = await res.json();
+      const res = await api.get(`/api/v1/teacher-class-lessons/teacher/${user?.id}`);
+      const data = res.data;
 
       const lessonsWithPending = data.filter((lesson: Lesson) =>
         lesson.lessonReservations?.some((r) => r.status === 'PENDING')
@@ -42,10 +41,7 @@ const TeacherRequests = () => {
 
   const handleReservation = async (reservationId: number, accepted: boolean) => {
     try {
-      await fetch(`/api/v1/teacher-class-lessons/reservation/${reservationId}/${accepted}`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      await api.post(`/api/v1/teacher-class-lessons/reservation/${reservationId}/${accepted}`);
       await fetchLessons();
     } catch (err) {
       console.error('Error updating reservation status:', err);
@@ -53,7 +49,9 @@ const TeacherRequests = () => {
   };
 
   useEffect(() => {
-    fetchLessons();
+    if (user?.id) {
+      fetchLessons();
+    }
   }, [user?.id]);
 
   return (

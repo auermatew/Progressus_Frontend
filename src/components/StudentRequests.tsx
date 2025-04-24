@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import api from '../api/apiService';
 
 interface Reservation {
   id: number;
@@ -23,11 +24,8 @@ const StudentRequests = () => {
 
   const fetchReservations = async () => {
     try {
-      const res = await fetch('/api/v1/lesson-reservations/student', {
-        credentials: 'include',
-      });
-      const data = await res.json();
-      setReservations(data);
+      const res = await api.get('/api/v1/lesson-reservations/student');
+      setReservations(res.data);
     } catch (err) {
       console.error('Hiba a foglalások lekérésekor:', err);
     }
