@@ -1,39 +1,35 @@
 // BookLessonModal.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
-
-interface LessonSlot {
-  id: number;
-  start_date: string;
-  end_date: string;
-  teacherClass: {
-    subject: string;
-    className: string;
-  };
-}
+import { TeacherClassLesson } from '../schema/lesson';
 
 interface BookLessonModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (lessonId: number) => void;
   teacherName: string;
-  lessonSlots: LessonSlot[];
+  lessonSlots: TeacherClassLesson[];
 }
 
-const BookLessonModal: React.FC<BookLessonModalProps> = ({ isOpen, onClose, onSubmit, teacherName, lessonSlots }) => {
-  const [selectedLessonId, setSelectedLessonId] = useState<number>(lessonSlots[0]?.id || 0);
+const BookLessonModal: React.FC<BookLessonModalProps> = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  teacherName,
+  lessonSlots,
+}) => {
+  const [selectedLessonId, setSelectedLessonId] = useState<number>(0);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    if (lessonSlots.length > 0) {
+      setSelectedLessonId(lessonSlots[0].id);
+    }
+  }, [lessonSlots]);
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedLessonId) {
-      try {
-        await onSubmit(selectedLessonId);
-        alert('Óra foglalás sikeresen elküldve!');
-        onClose();
-      } catch (error) {
-        console.error('Hiba történt a foglalás közben:', error);
-        alert('Sikertelen foglalás.');
-      }
+      onSubmit(selectedLessonId); // Meghívja a külső onSubmit-et (ami ExplorePage-ben van)
     }
   };
 
@@ -42,7 +38,10 @@ const BookLessonModal: React.FC<BookLessonModalProps> = ({ isOpen, onClose, onSu
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="w-full max-w-lg rounded-xl bg-[#1A0129] p-6 shadow-2xl text-white relative">
-        <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-gray-400">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-white hover:text-gray-400"
+        >
           <FaTimes size={20} />
         </button>
 
@@ -57,7 +56,7 @@ const BookLessonModal: React.FC<BookLessonModalProps> = ({ isOpen, onClose, onSu
           >
             {lessonSlots.map((slot) => (
               <option key={slot.id} value={slot.id}>
-                {new Date(slot.start_date).toLocaleString()} - {slot.teacherClass.subject}
+                {new Date(slot.startDate).toLocaleString()} - {slot.teacherClass.subjects}
               </option>
             ))}
           </select>

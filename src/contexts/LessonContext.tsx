@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, PropsWithChildren } from 'react';
 import { LessonApiService } from '../api/LessonApiService';
 import { useAuth } from './AuthContext';
+import { TeacherClassLesson } from '../schema/lesson';
 
 export interface Lesson {
   id: number;
@@ -20,7 +21,7 @@ export interface Lesson {
 }
 
 interface LessonContextType {
-  lessons: Lesson[];
+  lessons: TeacherClassLesson[];
   fetchLessons: () => Promise<void>;
 }
 
@@ -32,7 +33,7 @@ const LessonContext = createContext<LessonContextType>({
 export const useLesson = () => useContext(LessonContext);
 
 const LessonProvider = ({ children }: PropsWithChildren) => {
-  const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [lessons, setLessons] = useState<TeacherClassLesson[]>([]);
   const { user } = useAuth();
 
   const fetchLessons = useCallback(async () => {
@@ -42,7 +43,7 @@ const LessonProvider = ({ children }: PropsWithChildren) => {
     const endDate = new Date();
     endDate.setMonth(endDate.getMonth() + 1);
 
-    const data = await LessonApiService.getLessonsByDateInterval(
+    const data = await LessonApiService.getLessonsByCalendar(
       user.id,
       startDate,
       endDate.toISOString()

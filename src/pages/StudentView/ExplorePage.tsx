@@ -1,12 +1,15 @@
-import api from '../../api/apiService';
 import { useEffect, useState } from 'react';
 import { useTeacher } from '../../contexts/TeacherContext';
+import { Teacher } from '../../schema/teacher';
+import { TeacherClassLesson } from '../../schema/lesson';
+import { LessonApiService } from '../../api/LessonApiService';
 import NavbarSideSt from './NavbarSideSt';
-import Footer from '../../components/ui/Footer';
-import { FaSearch } from 'react-icons/fa';
 import BookLessonModal from '../../components/BookLessonModal';
 import BookingPopup from '../../components/BookingPopup';
-import { Teacher } from '../../schema/teacher';
+import Footer from '../../components/ui/Footer';
+import { FaSearch } from 'react-icons/fa';
+import '../../styles/animations.css';
+import '../../styles/studentStyle.css';
 
 const ExplorePage = () => {
   const { teachers, getTeachers } = useTeacher();
@@ -15,7 +18,7 @@ const ExplorePage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState<
-    (Teacher & { lessonSlots?: any[] }) | null
+    (Teacher & { lessonSlots?: TeacherClassLesson[] }) | null
   >(null);
 
   useEffect(() => {
@@ -39,26 +42,23 @@ const ExplorePage = () => {
 
   const handleOpenModal = async (teacher: Teacher) => {
     try {
-      const res = await api.get(`/api/v1/teacher-class-lessons/teacher/${teacher.id}`);
-      const lessonSlots = res.data;
+      const lessonSlots = await LessonApiService.getLessonsForTeacher(teacher.id);
       setSelectedTeacher({ ...teacher, lessonSlots });
       setModalOpen(true);
     } catch (error) {
-      console.error('Hiba a tanár óráinak lekérdezésekor:', error);
+      console.error('Hiba az órák lekérésekor:', error);
       alert('Nem sikerült lekérni az elérhető órákat.');
     }
   };
 
   const handleSendRequest = async (lessonId: number) => {
     try {
-      await api.post(`/api/v1/teacher-class-lessons/reserve/${lessonId}`);
+      await LessonApiService.reserveLesson(lessonId);
       setShowPopup(true);
       setModalOpen(false);
       setSelectedTeacher(null);
     } catch (error: any) {
       console.error('Foglalás hiba:', error);
-      alert('Hiba történt a foglalás során.');
-
       const msg = error?.response?.data?.message || error.message || '';
       if (msg.includes('already reserved')) {
         alert('Ez az óra már le van foglalva.');
@@ -158,6 +158,7 @@ const ExplorePage = () => {
 
       <Footer />
 
+      {/* Modal & Popup */}
       {modalOpen && selectedTeacher && (
         <BookLessonModal
           isOpen={modalOpen}

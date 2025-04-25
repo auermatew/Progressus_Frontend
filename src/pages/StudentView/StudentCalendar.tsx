@@ -4,7 +4,6 @@ import Footer from '../../components/ui/Footer';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './_studentStyle.css';
-import { useAuth } from '../../contexts/AuthContext';
 import api from '../../api/apiService';
 
 interface Reservation {
