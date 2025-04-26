@@ -9,7 +9,7 @@ import BookingPopup from '../../components/BookingPopup';
 import Footer from '../../components/ui/Footer';
 import { FaSearch } from 'react-icons/fa';
 import '../../styles/animations.css';
-import '../../styles/studentStyle.css';
+import './_studentStyle.css';
 
 const ExplorePage = () => {
   const { teachers, getTeachers } = useTeacher();

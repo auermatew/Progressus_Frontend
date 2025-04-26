@@ -6,7 +6,7 @@ import {
   useEffect,
   PropsWithChildren,
 } from 'react';
-import { Transaction } from '../schema/payment';
+import { Transaction } from '../schema/transaction';
 import { TransactionApiService } from '../api/TransactionApiService';
 
 interface TransactionContextType {

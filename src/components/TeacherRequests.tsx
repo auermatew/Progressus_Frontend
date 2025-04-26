@@ -1,101 +1,89 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import api from '../api/apiService';
-
-interface Reservation {
-  id: number;
-  status: 'PENDING' | 'APPROVED' | 'DECLINED';
-  user: {
-    fullName: string;
-  };
-}
-
-interface Lesson {
-  id: number;
-  start_date: string;
-  end_date: string;
-  teacherClass: {
-    subject: string;
-    className: string;
-  };
-  lessonReservations: Reservation[];
-}
+import { LessonApiService } from '../api/LessonApiService';
 
 const TeacherRequests = () => {
+  interface PendingReservation {
+    reservationId: number;
+    studentName: string;
+    subject: string;
+    startDate: string;
+    endDate: string;
+  }
+
   const { user } = useAuth();
-  const [requests, setRequests] = useState<Lesson[]>([]);
-
-  const fetchLessons = async () => {
-    try {
-      const res = await api.get(`/api/v1/teacher-class-lessons/teacher/${user?.id}`);
-      const data = res.data;
-
-      const lessonsWithPending = data.filter((lesson: Lesson) =>
-        lesson.lessonReservations?.some((r) => r.status === 'PENDING')
-      );
-      setRequests(lessonsWithPending);
-    } catch (err) {
-      console.error('Error loading teacher lessons:', err);
-    }
-  };
-
-  const handleReservation = async (reservationId: number, accepted: boolean) => {
-    try {
-      await api.post(`/api/v1/teacher-class-lessons/reservation/${reservationId}/${accepted}`);
-      await fetchLessons();
-    } catch (err) {
-      console.error('Error updating reservation status:', err);
-    }
-  };
+  const [pendingReservations, setPendingReservations] = useState<PendingReservation[]>([]);
 
   useEffect(() => {
     if (user?.id) {
-      fetchLessons();
+      fetchPendingReservations();
     }
   }, [user?.id]);
 
+  const fetchPendingReservations = async () => {
+    try {
+      const lessons = await LessonApiService.getLessonsForTeacher(user!.id);
+
+      const pending = lessons.flatMap((lesson) =>
+        lesson.lessonReservations?.filter((res) => res.status === 'PENDING').map((res) => ({
+          reservationId: res.id,
+          studentName: res.user.fullName,
+          subject: lesson.teacherClass.subjects.join(', '),
+          startDate: lesson.startDate,
+          endDate: lesson.endDate,
+        }))
+      );
+
+      setPendingReservations(pending);
+    } catch (error) {
+      console.error('Error loading teacher reservations:', error);
+    }
+  };
+
+  const handleDecision = async (reservationId: number, accepted: boolean) => {
+    try {
+      await LessonApiService.handleReservation(reservationId, accepted);
+      await fetchPendingReservations(); // újra betölti a listát
+    } catch (error) {
+      console.error('Error updating reservation:', error);
+    }
+  };
+
   return (
     <div className="mb-10">
-      <h2 className="mb-4 text-2xl font-semibold">Függőben lévő órakérések</h2>
-      {requests.length === 0 ? (
-        <p className="text-gray-400">Jelenleg nincsenek függőben lévő kérések.</p>
+      <h2 className="text-2xl font-semibold mb-4">Függőben lévő órakérések</h2>
+
+      {pendingReservations.length === 0 ? (
+        <p className="text-gray-400">Nincsenek függőben lévő kérések.</p>
       ) : (
         <div className="overflow-x-auto">
           <div className="flex flex-nowrap gap-4">
-            {requests.map((lesson) =>
-              lesson.lessonReservations
-                .filter((r) => r.status === 'PENDING')
-                .map((r) => (
-                  <div
-                    key={r.id}
-                    className="max-w-[300px] min-w-[280px] flex-shrink-0 rounded-lg bg-[#2B0A3D] p-4 shadow-lg transition hover:shadow-xl"
+            {pendingReservations.map((r) => (
+              <div
+                key={r.reservationId}
+                className="min-w-[280px] max-w-[300px] flex-shrink-0 rounded-lg bg-[#2B0A3D] p-4 shadow-md hover:shadow-lg transition"
+              >
+                <h3 className="text-lg font-bold mb-1">{r.studentName}</h3>
+                <p className="text-sm text-gray-400">
+                  {new Date(r.startDate).toLocaleString()} - {new Date(r.endDate).toLocaleTimeString()}
+                </p>
+                <p className="text-sm text-gray-400 mb-2">Tantárgy: {r.subject}</p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleDecision(r.reservationId, true)}
+                    className="w-1/2 rounded-md bg-green-600 py-2 text-sm font-semibold hover:bg-green-700"
                   >
-                    <h3 className="mb-1 text-lg font-bold">{r.user.fullName}</h3>
-                    <p className="text-sm text-gray-300">
-                      {new Date(lesson.start_date).toLocaleString()} –{' '}
-                      {new Date(lesson.end_date).toLocaleTimeString()}
-                    </p>
-                    <p className="text-sm text-gray-400">
-                      Tantárgy: <span className="text-white">{lesson.teacherClass.subject}</span> |
-                      Osztály: <span className="text-white">{lesson.teacherClass.className}</span>
-                    </p>
-                    <div className="mt-4 flex gap-2">
-                      <button
-                        onClick={() => handleReservation(r.id, true)}
-                        className="w-full rounded-md bg-green-600 px-3 py-2 text-sm font-semibold hover:bg-green-700"
-                      >
-                        Elfogadás
-                      </button>
-                      <button
-                        onClick={() => handleReservation(r.id, false)}
-                        className="w-full rounded-md bg-red-600 px-3 py-2 text-sm font-semibold hover:bg-red-700"
-                      >
-                        Elutasítás
-                      </button>
-                    </div>
-                  </div>
-                ))
-            )}
+                    Elfogadás
+                  </button>
+                  <button
+                    onClick={() => handleDecision(r.reservationId, false)}
+                    className="w-1/2 rounded-md bg-red-600 py-2 text-sm font-semibold hover:bg-red-700"
+                  >
+                    Elutasítás
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
