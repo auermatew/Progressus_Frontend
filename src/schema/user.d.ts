@@ -6,5 +6,5 @@ export interface User {
     phoneNumber?: string;
     profilePicture?: string;
     description?: string;
-    role: 'TEACHER' | 'STUDENT';
+    role: 'ROLE_TEACHER' | 'ROLE_STUDENT';
 }

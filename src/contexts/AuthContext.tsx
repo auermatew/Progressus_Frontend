@@ -13,116 +13,90 @@ import AuthApiService from '../api/AuthApiService';
 
 interface AuthContextType {
   user: User | null;
+  token: string | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void | AxiosError<ApiError>>;
-  register: (data: {
-    fullName: string;
-    email: string;
-    password: string;
-    role: 'TEACHER' | 'STUDENT';
-  }) => Promise<void | AxiosError<ApiError>>;
+  register: (data: { fullName: string; email: string; password: string }) => Promise<void | AxiosError<ApiError>>;
   logout: () => void;
-  refreshUser: () => Promise<void>;
-  updateUserProfile: (data: {
-    fullName: string;
-    email: string;
-    password?: string;
-    phoneNumber?: string;
-    description?: string;
-    profilePicture?: string;
-  }) => Promise<any>;
+  refreshUser: (overrideToken?: string) => Promise<User | null>;
+  becomeTeacher: (data: { contactEmail: string; contactPhone: string }) => Promise<void | AxiosError<ApiError>>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  token: null,
   loading: true,
   login: () => Promise.resolve(),
   register: () => Promise.resolve(),
   logout: () => {},
-  refreshUser: () => Promise.resolve(),
-  updateUserProfile: () => Promise.resolve(),
+  refreshUser: () => Promise.resolve(null),
+  becomeTeacher: () => Promise.resolve(),
 });
 
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const refreshUser = useCallback(async (overrideToken?: string): Promise<User | null> => {
+    try {
+      const res = await AuthApiService.getUser(overrideToken || token!);
+      setUser(res);
+      return res;
+    } catch (error) {
+      console.error('Failed to refresh user:', error);
+      setUser(null);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, [token]);
 
   const login = useCallback(async (email: string, password: string) => {
     try {
-      const response = await AuthApiService.login({ email, password });
-      setUser(response.user);
-      localStorage.setItem('token', response.token);
+      const res = await AuthApiService.login({ email, password });
+      setToken(res.token);
+      await refreshUser(res.token);
     } catch (error) {
       console.error('Login failed:', error);
       return error as AxiosError<ApiError>;
     }
-  }, []);
+  }, [refreshUser]);
 
-  const register = useCallback(
-    async (data: {
-      fullName: string;
-      email: string;
-      password: string;
-      role: 'TEACHER' | 'STUDENT';
-    }) => {
-      try {
-        const response = await AuthApiService.register(data);
-        setUser(response.user || response);
-        localStorage.setItem('token', response.token);
-      } catch (error) {
-        console.error('Registration failed:', error);
-        return error as AxiosError<ApiError>;
-      }
-    },
-    []
-  );
-
-  const refreshUser = useCallback(async () => {
+  const register = useCallback(async (data: { fullName: string; email: string; password: string }) => {
     try {
-      const response = await AuthApiService.getUser();
-      setUser(response.user || response);
+      const res = await AuthApiService.register(data);
+      setToken(res.token);
+      await refreshUser(res.token);
     } catch (error) {
-      console.error('Could not refresh user:', error);
-      setUser(null);
-    }
-  }, []);
-
-  const logout = useCallback(() => {
-    setUser(null);
-    localStorage.removeItem('token');
-  }, []);
-
-  const updateUserProfile = useCallback(
-    async (data: {
-      fullName: string;
-      email: string;
-      password?: string;
-      phoneNumber?: string;
-      description?: string;
-      profilePicture?: string;
-    }) => {
-      const updated = await AuthApiService.editUser(data);
-      setUser(updated.user || updated);
-      return updated;
-    },
-    []
-  );
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      refreshUser();
-    } else {
-      setLoading(false);
+      console.error('Registration failed:', error);
+      return error as AxiosError<ApiError>;
     }
   }, [refreshUser]);
 
+  const logout = useCallback(() => {
+    setUser(null);
+    setToken(null);
+  }, []);
+
+  const becomeTeacher = useCallback(async (data: { contactEmail: string; contactPhone: string }) => {
+    try {
+      await AuthApiService.becomeTeacher(data);
+      await refreshUser();
+    } catch (error) {
+      console.error('Failed to become a teacher:', error);
+      return error as AxiosError<ApiError>;
+    }
+  }, [refreshUser]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
   return (
-    <AuthContext.Provider
-      value={{ user, loading, login, register, logout, refreshUser, updateUserProfile }}
-    >
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout, refreshUser, becomeTeacher }}>
       {children}
     </AuthContext.Provider>
   );

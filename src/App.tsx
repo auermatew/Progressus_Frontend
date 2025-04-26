@@ -18,7 +18,7 @@ const LoginPage = lazy(() => import('./pages/Login/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/Registration/RegisterPage'));
 const DashboardPage = lazy(() => import('./pages/TeacherView/DashboardPage'));
 const Lessons = lazy(() => import('./pages/TeacherView/Lessons'));
-const Students = lazy(() => import('./pages/TeacherView/Students'));
+const Students = lazy(() => import('./pages/TeacherView/Subjects.tsx'));
 const Calendar = lazy(() => import('./pages/TeacherView/Calendar'));
 
 const StudentBoard = lazy(() => import('./pages/StudentView/StudentDash'));

@@ -23,7 +23,7 @@ const StudentDash = () => {
           <div className="rounded-xl bg-[#2B0A3D] p-6 shadow-md">
             <h2 className="text-lg font-semibold mb-2">Fiók információk</h2>
             <p><span className="text-gray-400">Email:</span> {user?.email}</p>
-            <p><span className="text-gray-400">Szerepkör:</span> {user?.role === 'STUDENT' ? 'Diák' : user?.role}</p>
+            <p><span className="text-gray-400">Szerepkör:</span> {user?.role === 'ROLE_STUDENT' ? 'Diák' : user?.role}</p>
           </div>
 
           {/* Számlázási adatok */}
