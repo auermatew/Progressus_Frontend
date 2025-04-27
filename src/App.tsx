@@ -1,211 +1,83 @@
-//TODO: Add ProtectedRoute component to protect routes
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
 import Loading from './components/ui/Loading';
-import ErrorBoundary from './utilities/ErrorBoundary.tsx';
-// import ProtectedRoute from './utilities/ProtectedRoute';
-import MyPage from './pages/TeacherView/MyPage';
-import UnauthorizedPage from './pages/UnauthorizedPage';
-import SubjectAdminPage from './pages/SubjectAdminPage';
+import ErrorBoundary from './utilities/ErrorBoundary';
 import AuthProvider from './contexts/AuthContext';
 import TeacherProvider from './contexts/TeacherContext';
 import SubjectProvider from './contexts/SubjectContext';
 import PaymentProvider from './contexts/PaymentContext';
 import TransactionProvider from './contexts/TransactionContext';
 
+// Lazy loaded oldalak
 const LandingPage = lazy(() => import('./pages/Landingp/LandingPage'));
 const LoginPage = lazy(() => import('./pages/Login/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/Registration/RegisterPage'));
 const DashboardPage = lazy(() => import('./pages/TeacherView/DashboardPage'));
 const Lessons = lazy(() => import('./pages/TeacherView/Lessons'));
-const Students = lazy(() => import('./pages/TeacherView/Subjects.tsx'));
+const Subjects = lazy(() => import('./pages/TeacherView/Subjects'));
 const Calendar = lazy(() => import('./pages/TeacherView/Calendar'));
-
-const StudentBoard = lazy(() => import('./pages/StudentView/StudentDash'));
+const MyPage = lazy(() => import('./pages/TeacherView/MyPage'));
+const SubjectAdminPage = lazy(() => import('./pages/SubjectAdminPage'));
 const ExplorePage = lazy(() => import('./pages/StudentView/ExplorePage'));
+const StudentBoard = lazy(() => import('./pages/StudentView/StudentDash'));
 const StudentCalendar = lazy(() => import('./pages/StudentView/StudentCalendar'));
+const UnauthorizedPage = lazy(() => import('./pages/UnauthorizedPage'));
+
+const AppRoutes = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) return <div className="text-white text-center p-10">Loading...</div>;
+
+  const isStudent = user?.role === 'ROLE_STUDENT';
+  const isTeacher = user?.role === 'ROLE_TEACHER';
+
+  return (
+    <Routes>
+      {/* Publikus oldalak */}
+      <Route path="/" element={<Suspense fallback={<Loading />}><LandingPage /></Suspense>} />
+      <Route path="/login" element={<Suspense fallback={<Loading />}><LoginPage /></Suspense>} />
+      <Route path="/register" element={<Suspense fallback={<Loading />}><RegisterPage /></Suspense>} />
+      <Route path="/unauthorized" element={<Suspense fallback={<Loading />}><UnauthorizedPage /></Suspense>} />
+
+      {/* Tanár oldalak */}
+      {isTeacher && (
+        <>
+          <Route path="/dashboard" element={<TeacherProvider><Suspense fallback={<Loading />}><DashboardPage /></Suspense></TeacherProvider>} />
+          <Route path="/lessons" element={<TeacherProvider><Suspense fallback={<Loading />}><Lessons /></Suspense></TeacherProvider>} />
+          <Route path="/students" element={<TeacherProvider><Suspense fallback={<Loading />}><Subjects /></Suspense></TeacherProvider>} />
+          <Route path="/calendar" element={<TeacherProvider><Suspense fallback={<Loading />}><Calendar /></Suspense></TeacherProvider>} />
+          <Route path="/mypage" element={<TeacherProvider><PaymentProvider><Suspense fallback={<Loading />}><MyPage /></Suspense></PaymentProvider></TeacherProvider>} />
+        </>
+      )}
+
+      {/* Admin oldal (minden authentikált user eléri, ha kell majd role checkkel bővítjük) */}
+      {user && (
+        <Route path="/admin/subjects" element={<SubjectProvider><Suspense fallback={<Loading />}><SubjectAdminPage /></Suspense></SubjectProvider>} />
+      )}
+
+      {/* Diák oldalak */}
+      {isStudent && (
+        <>
+          <Route path="/explore" element={<TeacherProvider><SubjectProvider><Suspense fallback={<Loading />}><ExplorePage /></Suspense></SubjectProvider></TeacherProvider>} />
+          <Route path="/studentboard" element={<TransactionProvider><PaymentProvider><Suspense fallback={<Loading />}><StudentBoard /></Suspense></PaymentProvider></TransactionProvider>} />
+          <Route path="/studentcalendar" element={<TeacherProvider><Suspense fallback={<Loading />}><StudentCalendar /></Suspense></TeacherProvider>} />
+        </>
+      )}
+
+      {/* Rossz role esetén átirányítás */}
+      <Route path="*" element={<Navigate to={user ? '/unauthorized' : '/login'} />} />
+    </Routes>
+  );
+};
 
 const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ErrorBoundary fallback="Error">
-                <Suspense fallback={<Loading />}>
-                  <LandingPage />
-                </Suspense>
-              </ErrorBoundary>
-            }
-          />
-
-          <Route
-            path="/unauthorized"
-            element={
-              <ErrorBoundary fallback="Error">
-                <Suspense fallback={<Loading />}>
-                  <UnauthorizedPage />
-                </Suspense>
-              </ErrorBoundary>
-            }
-          />
-
-          <Route
-            path="/login"
-            element={
-              <ErrorBoundary fallback="Error">
-                <Suspense fallback={<Loading />}>
-                  <LoginPage />
-                </Suspense>
-              </ErrorBoundary>
-            }
-          />
-
-          <Route
-            path="/register"
-            element={
-              <ErrorBoundary fallback="Error">
-                <Suspense fallback={<Loading />}>
-                  <RegisterPage />
-                </Suspense>
-              </ErrorBoundary>
-            }
-          />
-
-          <Route
-            path="/dashboard"
-            element={
-              // <ProtectedRoute requiredRole="TEACHER">
-              <TeacherProvider>
-                <ErrorBoundary fallback="Error">
-                  <Suspense fallback={<Loading />}>
-                    <DashboardPage />
-                  </Suspense>
-                </ErrorBoundary>
-              </TeacherProvider>
-              // </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/lessons"
-            element={
-              // <ProtectedRoute>
-              <TeacherProvider>
-                <ErrorBoundary fallback="Error">
-                  <Suspense fallback={<Loading />}>
-                    <Lessons />
-                  </Suspense>
-                </ErrorBoundary>
-              </TeacherProvider>
-              // </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/students"
-            element={
-              // <ProtectedRoute requiredRole="TEACHER">
-              <TeacherProvider>
-                <ErrorBoundary fallback="Error">
-                  <Suspense fallback={<Loading />}>
-                    <Students />
-                  </Suspense>
-                </ErrorBoundary>
-              </TeacherProvider>
-              // </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/calendar"
-            element={
-              // <ProtectedRoute requiredRole="TEACHER">
-              <TeacherProvider>
-                <ErrorBoundary fallback="Error">
-                  <Suspense fallback={<Loading />}>
-                    <Calendar />
-                  </Suspense>
-                </ErrorBoundary>
-              </TeacherProvider>
-              // </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/mypage"
-            element={
-              <TeacherProvider>
-                <PaymentProvider>
-                  <ErrorBoundary fallback="Error">
-                    <Suspense fallback={<Loading />}>
-                      <MyPage />
-                    </Suspense>
-                  </ErrorBoundary>
-                </PaymentProvider>
-              </TeacherProvider>
-            }
-          />
-
-          <Route
-            path="/admin/subjects"
-            element={
-              <SubjectProvider>
-                <ErrorBoundary fallback="Error">
-                  <Suspense fallback={<Loading />}>
-                    <SubjectAdminPage />
-                  </Suspense>
-                </ErrorBoundary>
-              </SubjectProvider>
-            }
-          />
-
-          <Route
-            path="/explore"
-            element={
-              <AuthProvider>
-                <TeacherProvider>
-                  <SubjectProvider>
-                    <ErrorBoundary fallback="Error">
-                      <Suspense fallback={<Loading />}>
-                        <ExplorePage />
-                      </Suspense>
-                    </ErrorBoundary>
-                  </SubjectProvider>
-                </TeacherProvider>
-              </AuthProvider>
-            }
-          />
-          <Route
-            path="/studentboard"
-            element={
-              <TransactionProvider>
-                <PaymentProvider>
-                  <ErrorBoundary fallback={<div>Something went wrong</div>}>
-                    <Suspense fallback={<Loading />}>
-                      <StudentBoard />
-                    </Suspense>
-                  </ErrorBoundary>
-                </PaymentProvider>
-              </TransactionProvider>
-            }
-          />
-
-          <Route
-            path="/studentcalendar"
-            element={
-              <TeacherProvider>
-                <ErrorBoundary fallback="Error">
-                  <Suspense fallback={<Loading />}>
-                    <StudentCalendar />
-                  </Suspense>
-                </ErrorBoundary>
-              </TeacherProvider>
-            }
-          />
-        </Routes>
+        <ErrorBoundary fallback={<div className="text-red-500">Something went wrong!</div>}>
+          <AppRoutes />
+        </ErrorBoundary>
       </BrowserRouter>
     </AuthProvider>
   );
