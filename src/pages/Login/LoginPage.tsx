@@ -39,10 +39,8 @@ const LoginPage = () => {
       </nav>
 
       <div className="wrapper flex h-screen w-screen flex-col items-center justify-center md:flex-row">
-        <div className="side-text hidden w-[45%] items-center justify-center md:flex"></div>
-
-        <div className="login-form flex w-full flex-col items-center justify-center md:w-[55%]">
-          <div className="form-wrapper z-10 flex w-full flex-col items-center justify-center md:w-[70%] md:border-x-2">
+        <div className="login-form flex w-full h-full flex-col items-center justify-center md:w-[55%]">
+          <div className="form-wrapper z-10 flex w-full h-full flex-col items-center justify-center md:w-[70%] md:border-x-2">
             <Heading content="Bejelentkezés" />
 
             {errorMessage && (

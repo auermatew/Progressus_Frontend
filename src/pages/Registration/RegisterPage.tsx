@@ -59,10 +59,9 @@ const RegisterPage = () => {
       </nav>
 
       <div className="wrapper flex h-screen w-screen flex-col items-center justify-center md:flex-row">
-        <div className="side-text hidden w-[40%] items-center justify-center md:flex"></div>
 
-        <div className="register-form flex w-full flex-col items-center justify-center md:w-[60%]">
-          <div className="form-wrapper z-10 w-full p-4 md:w-3/5 md:border-x-2">
+        <div className="register-form flex w-[70%] h-full flex-col items-center justify-center">
+          <div className="form-wrapper z-10 w-full h-full flex flex-col items-center justify-center p-4 md:w-3/5 md:border-x-2">
             <Heading content="Regisztráció" />
 
             {status === 'success' && (
@@ -76,7 +75,7 @@ const RegisterPage = () => {
               </div>
             )}
 
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-[70%] gap-4">
               <div className="input-wrapper flex items-center border-b-2 border-white px-4">
                 <UserIcon size={20} className="text-white" />
                 <Input

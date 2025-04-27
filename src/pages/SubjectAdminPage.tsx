@@ -92,7 +92,7 @@ const SubjectAdminPage = () => {
                 <>
                   <h2 className="text-xl font-semibold">{subj.subject}</h2>
                   <p className="text-sm text-gray-400">
-                    Állapot: {subj.isVerified ? '✅ Ellenőrzött' : '❌ Nem ellenőrzött'}
+                    Állapot: {subj.verified ? '✅ Ellenőrzött' : '❌ Nem ellenőrzött'}
                   </p>
                   <div className="flex gap-3 mt-3">
                     <button
@@ -101,7 +101,7 @@ const SubjectAdminPage = () => {
                         setEditMode({
                           id: subj.id.toString(),
                           name: subj.subject,
-                          verified: subj.isVerified,
+                          verified: subj.verified,
                         })
                       }
                     >
