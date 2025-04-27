@@ -17,7 +17,7 @@ const StudentDash = () => {
         <h1 className="text-4xl font-bold mb-6">Üdvözlünk, {user?.fullName}!</h1>
 
         {/* Fő információs blokkok */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
 
           {/* Fiók információk */}
           <div className="rounded-xl bg-[#2B0A3D] p-6 shadow-md">
@@ -54,6 +54,17 @@ const StudentDash = () => {
             ) : (
               <p className="text-gray-400">Nincs elérhető tranzakció</p>
             )}
+          </div>
+
+          {/* Egyenleg kártya */}
+          <div className="rounded-xl bg-[#2B0A3D] p-6 shadow-md text-center">
+            <h2 className="text-lg font-semibold mb-2">Egyenleg</h2>
+            <p className="text-3xl font-bold text-purple-400">
+              {billingDetails?.balance ?? 0} Ft
+            </p>
+            <button className="mt-4 w-full rounded-md bg-purple-600 px-4 py-2 text-sm font-semibold hover:bg-purple-700">
+              Összeg feltöltése
+            </button>
           </div>
 
         </div>

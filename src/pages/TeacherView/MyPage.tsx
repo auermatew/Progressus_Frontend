@@ -7,7 +7,7 @@ import SubmitButton from '../../components/form/submitButton';
 import './_teacherStyle.css';
 
 const MyPage = () => {
-  const { user, refreshUser, updateUserProfile } = useAuth();
+  const { user, refreshUser, updateUserProfile, token } = useAuth();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -146,14 +146,17 @@ const MyPage = () => {
                     formData.append("file", file);
 
                     try {
-                      const res = await fetch("https://your-backend.com/api/upload", {
+                      const res = await fetch("/api/v1/images/profile-picture/upload", {
                         method: "POST",
+                        headers: {
+                          Authorization: `Bearer ${token}`,
+                        },
                         body: formData,
                       });
 
-                      const { imageUrl } = await res.json();
-                      setProfilePicture(imageUrl);
-                      setProfilePreview(imageUrl);
+                      const uploadedImage = await res.json();
+                      setProfilePicture(uploadedImage.url);
+                      setProfilePreview(uploadedImage.url);
                     } catch (err) {
                       console.error("Kép feltöltése sikertelen", err);
                     }

@@ -9,7 +9,6 @@ import SubjectProvider from './contexts/SubjectContext';
 import PaymentProvider from './contexts/PaymentContext';
 import TransactionProvider from './contexts/TransactionContext';
 
-// Lazy loaded oldalak
 const LandingPage = lazy(() => import('./pages/Landingp/LandingPage'));
 const LoginPage = lazy(() => import('./pages/Login/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/Registration/RegisterPage'));
@@ -45,7 +44,7 @@ const AppRoutes = () => {
         <>
           <Route path="/dashboard" element={<TeacherProvider><Suspense fallback={<Loading />}><DashboardPage /></Suspense></TeacherProvider>} />
           <Route path="/lessons" element={<TeacherProvider><Suspense fallback={<Loading />}><Lessons /></Suspense></TeacherProvider>} />
-          <Route path="/students" element={<TeacherProvider><Suspense fallback={<Loading />}><Subjects /></Suspense></TeacherProvider>} />
+          <Route path="/subjects" element={<TeacherProvider><Suspense fallback={<Loading />}><Subjects /></Suspense></TeacherProvider>} />
           <Route path="/calendar" element={<TeacherProvider><Suspense fallback={<Loading />}><Calendar /></Suspense></TeacherProvider>} />
           <Route path="/mypage" element={<TeacherProvider><PaymentProvider><Suspense fallback={<Loading />}><MyPage /></Suspense></PaymentProvider></TeacherProvider>} />
         </>

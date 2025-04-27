@@ -20,6 +20,14 @@ interface AuthContextType {
   logout: () => void;
   refreshUser: (overrideToken?: string) => Promise<User | null>;
   becomeTeacher: (data: { contactEmail: string; contactPhone: string }) => Promise<void | AxiosError<ApiError>>;
+  updateUserProfile: (data: {
+    fullName: string;
+    email: string;
+    password?: string;
+    phoneNumber?: string;
+    description?: string;
+    profilePicture?: string;
+  }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -31,6 +39,7 @@ const AuthContext = createContext<AuthContextType>({
   logout: () => {},
   refreshUser: () => Promise.resolve(null),
   becomeTeacher: () => Promise.resolve(),
+  updateUserProfile: () => Promise.resolve(),
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -91,12 +100,29 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   }, [refreshUser]);
 
+  const updateUserProfile = useCallback(async (data: {
+    fullName: string;
+    email: string;
+    password?: string;
+    phoneNumber?: string;
+    description?: string;
+    profilePicture?: string;
+  }) => {
+    try {
+      const res = await AuthApiService.editUser(data);
+      setUser(res);
+    } catch (error) {
+      console.error('Failed to update user profile:', error);
+      throw error;
+    }
+  }, []);
+
   useEffect(() => {
     setLoading(false);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout, refreshUser, becomeTeacher }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout, refreshUser, becomeTeacher, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );

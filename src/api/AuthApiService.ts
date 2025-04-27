@@ -21,9 +21,22 @@ const becomeTeacher = async (data: { contactEmail: string; contactPhone: string 
   await api.post('/api/v1/teachers/teacher/registration', data);
 };
 
+const editUser = async (data: {
+  fullName: string;
+  email: string;
+  password?: string;
+  phoneNumber?: string;
+  description?: string;
+  profilePicture?: string;
+}) => {
+  const res = await api.patch('/api/v1/user/edit', data);
+  return res.data;
+};
+
 export default {
   register,
   login,
   getUser,
   becomeTeacher,
+  editUser
 };

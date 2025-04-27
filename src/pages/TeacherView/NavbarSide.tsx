@@ -30,10 +30,19 @@ export default function NavbarSide() {
         id: 'subjects',
         text: 'Tantárgyak',
         icon: <FaBookJournalWhills size={25} />,
-        href: '/students',
+        href: '/subjects',
       },
-      { id: 'lessons', text: 'Óráim', icon: <PiStudentFill size={25} />, href: '/lessons' },
-      { id: 'calendar', text: 'Naptár', icon: <MdCalendarMonth size={25} />, href: '/calendar' },
+      {
+        id: 'lessons',
+        text: 'Óráim',
+        icon: <PiStudentFill size={25} />,
+        href: '/lessons' },
+      {
+        id: 'calendar',
+        text: 'Naptár',
+        icon: <MdCalendarMonth size={25} />,
+        href: '/calendar'
+      },
     ],
     []
   );
@@ -97,7 +106,7 @@ export default function NavbarSide() {
                 onClick={() => {
                   setActiveItem('logout');
                   logout();
-                  navigate('/');
+                  navigate('/login');
                 }}
                 isOpen={isOpen}
               />
